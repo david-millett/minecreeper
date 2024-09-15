@@ -25,7 +25,6 @@ main {
 }
 
 .cell {
-    color: red;
     border: 1px solid black;
     display: inline-block;
 }

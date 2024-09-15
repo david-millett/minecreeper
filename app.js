@@ -30,16 +30,37 @@ const generateBoard = () => {
         cell.id = i
         cell.style.height = `${100 / numberOfRows}%`
         cell.style.width = `${100 / numberOfColumns}%`
-        cellEls.push(cell)
+        const cellObj = {
+            cell,
+            isSkeleton: false,
+            revealed: false,
+            count: 0,
+        }
+        cellEls.push(cellObj)
         gameboardEl.appendChild(cell)
     }
 }
 
 generateBoard()
 
+const placeSkeletons = () => {
+    let skeletonsPlaced = 0
+    while (skeletonsPlaced < numberOfSkeletons) {
+        const placement = Math.floor(Math.random() * numberOfCells)
+        if (!cellEls[placement].isSkeleton) {
+            cellEls[placement].isSkeleton = true
+            cellEls[placement].cell.classList.add("skeleton")
+            cellEls[placement].cell.innerText = "X"
+            skeletonsPlaced++
+        }
+        // console.log(placement)
+    }
+}
+
+placeSkeletons()
+
+
 //create a board - this should be an array within an array and create a grid visible on the screen
-
-
 // const generateBoard = () => {
 //     const board = []
 //     for (let x = 0; x < numberOfRows; x++) {
@@ -59,8 +80,6 @@ generateBoard()
 //     return board
 // }
 
-
-// console.log(generateBoard())
 
 //-------------------------- Event Listeners
 
