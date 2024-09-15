@@ -1,0 +1,25 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: beige;
+}
+
+h1 {
+    display: flex;
+    justify-content: center;
+}
+
+#gameboard {
+    display: grid;
+    grid-template-columns: repeat(9, auto);
+    justify-content: center;
+}
+
+.cell {
+    color: red;
+    width: 30px;
+    height: 30px;
+    border: 1px solid black;
+}
