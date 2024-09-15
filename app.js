@@ -17,23 +17,25 @@ let numberOfSkeletons = 10
 
 const gameboardEl = document.querySelector("#gameboard")
 
-
-
+const cellEls = []
+ 
 
 //-------------------------- Functions
 
 const generateBoard = () => {
-    board = []
     for (let i = 0; i < numberOfCells; i++) {
-        const cellElement = document.createElement("div")
-        cellElement.className = "cell"
-        gameboardEl.appendChild(cellElement)
-        const cell = ''
-        board.push(cell)
+        const cell = document.createElement("div")
+        cell.classList.add("cell")
+        cell.innerText = i
+        cell.id = i
+        cell.style.height = `${100 / numberOfRows}%`
+        cell.style.width = `${100 / numberOfColumns}%`
+        cellEls.push(cell)
+        gameboardEl.appendChild(cell)
     }
-    return board
 }
 
+generateBoard()
 
 //create a board - this should be an array within an array and create a grid visible on the screen
 
@@ -58,7 +60,7 @@ const generateBoard = () => {
 // }
 
 
-console.log(generateBoard())
+// console.log(generateBoard())
 
 //-------------------------- Event Listeners
 

@@ -4,6 +4,7 @@
 
 body {
     background-color: beige;
+    margin: 0
 }
 
 h1 {
@@ -11,15 +12,24 @@ h1 {
     justify-content: center;
 }
 
-#gameboard {
-    display: grid;
-    grid-template-columns: repeat(9, auto);
+main {
+    display: flex;
     justify-content: center;
+    align-items: center;
+}
+
+#gameboard {
+    width: 600px;
+    height: 600px;
+    border: 1px solid black
 }
 
 .cell {
     color: red;
-    width: 30px;
-    height: 30px;
     border: 1px solid black;
+    display: inline-block;
+}
+
+.skeleton {
+    background-color: red;
 }
