@@ -1,11 +1,12 @@
 //-------------------------- Constants
 
+const board = []
 
 //-------------------------- Variables
 
-let board
 let youWin
 let gameOver
+
 let numberOfRows = 9
 let numberOfColumns = 9
 let numberOfCells = numberOfRows * numberOfColumns
@@ -17,7 +18,7 @@ let numberOfSkeletons = 10
 
 const gameboardEl = document.querySelector("#gameboard")
 
-const cellEls = []
+
  
 
 //-------------------------- Functions
@@ -34,9 +35,9 @@ const generateBoard = () => {
             cell,
             isSkeleton: false,
             revealed: false,
-            count: 0,
+            skeleCount: 0,
         }
-        cellEls.push(cellObj)
+        board.push(cellObj)
         gameboardEl.appendChild(cell)
     }
 }
@@ -47,10 +48,10 @@ const placeSkeletons = () => {
     let skeletonsPlaced = 0
     while (skeletonsPlaced < numberOfSkeletons) {
         const placement = Math.floor(Math.random() * numberOfCells)
-        if (!cellEls[placement].isSkeleton) {
-            cellEls[placement].isSkeleton = true
-            cellEls[placement].cell.classList.add("skeleton")
-            cellEls[placement].cell.innerText = "X"
+        if (!board[placement].isSkeleton) {
+            board[placement].isSkeleton = true
+            board[placement].cell.classList.add("skeleton")
+            board[placement].cell.innerText = "X"
             skeletonsPlaced++
         }
         // console.log(placement)
@@ -59,6 +60,27 @@ const placeSkeletons = () => {
 
 placeSkeletons()
 
+
+const calcNearbySkeletons = () => {
+    board.forEach((square, index) => {      
+        
+        if (index > 0 && index % numberOfColumns !== 0 && board[index - 1].isSkeleton) {
+            square.skeleCount ++
+        } 
+
+        if (index < numberOfCells && index % numberOfColumns !== numberOfColumns - 1 && board[index + 1].isSkeleton) {
+            square.skeleCount ++
+        }
+
+
+        square.cell.innerHTML = square.skeleCount
+
+    })
+}
+
+calcNearbySkeletons()
+
+console.log(board)
 
 //create a board - this should be an array within an array and create a grid visible on the screen
 // const generateBoard = () => {
