@@ -42,13 +42,57 @@ const generateBoard = () => {
             revealed: false,
             skeleCount: 0,
             tombstone: false,
+            neighbours: [],
         }
         board.push(cellObj)
         gameboardEl.appendChild(cell)
     }
 }
 
-generateBoard()
+const getNeighbours = () => {
+    board.forEach((square, index) => {      
+
+        //neighbour to left
+        if (index > 0 && index % numberOfColumns !== 0) {
+            square.neighbours.push(board[index - 1])
+        } 
+        
+        //neighbour to right
+        if (index < numberOfCells && index % numberOfColumns !== numberOfColumns - 1) {
+            square.neighbours.push(board[index + 1])
+        }
+        
+        //neighbour above
+        if (index > numberOfColumns) {
+            square.neighbours.push(board[index - numberOfColumns])
+        }
+
+        //neighbour below
+        if (index < numberOfCells - numberOfColumns) {
+            square.neighbours.push(board[index + numberOfColumns])
+        }
+
+        //neighbour above left
+        if (index > 0 && index > numberOfColumns && index % numberOfColumns !== 0) {
+            square.neighbours.push(board[index - numberOfColumns - 1])
+        }
+
+        //neighbour above right
+        if (index < numberOfCells && index > numberOfColumns && index % numberOfColumns !== numberOfColumns - 1) {
+            square.neighbours.push(board[index - numberOfColumns + 1])
+        }
+
+        //neighbour below left
+        if (index > 0 && index < numberOfCells - numberOfColumns && index % numberOfColumns !== 0) {
+            square.neighbours.push(board[index + numberOfColumns - 1])
+        } 
+
+        //neighbour below right
+        if (index < numberOfCells && index < numberOfCells - numberOfColumns && index % numberOfColumns !== numberOfColumns - 1) {
+            square.neighbours.push(board[index + numberOfColumns + 1])
+        }
+    })
+}
 
 const placeSkeletons = () => {
     let skeletonsPlaced = 0
@@ -64,75 +108,41 @@ const placeSkeletons = () => {
     }
 }
 
-
-const getNeighbours = () => {
-
-}
-
-
-placeSkeletons()
-
-
 const calcNearbySkeletons = () => {
-    board.forEach((square, index) => {      
-
-        //count square to left
-        if (index > 0 && index % numberOfColumns !== 0 && board[index - 1].isSkeleton) {
-            square.skeleCount ++
-        } 
-        
-        //count square to right
-        if (index < numberOfCells && index % numberOfColumns !== numberOfColumns - 1 && board[index + 1].isSkeleton) {
-            square.skeleCount ++
-        }
-        
-        //count square above
-        if (index > numberOfColumns && board[index - numberOfColumns].isSkeleton) {
-            square.skeleCount ++
-        }
-
-        //count square below
-        if (index < numberOfCells - numberOfColumns && board[index + numberOfColumns].isSkeleton) {
-            square.skeleCount ++
-        }
-
-        //count square above left
-        if (index > 0 && index > numberOfColumns && index % numberOfColumns !== 0 && board[index - numberOfColumns - 1].isSkeleton) {
-            square.skeleCount ++
-        }
-
-        //count square above right
-        if (index < numberOfCells && index > numberOfColumns && index % numberOfColumns !== numberOfColumns - 1 && board[index - numberOfColumns + 1].isSkeleton) {
-            square.skeleCount ++
-        }
-
-        //count square below left
-        if (index > 0 && index < numberOfCells - numberOfColumns && index % numberOfColumns !== 0 && board[index + numberOfColumns - 1].isSkeleton) {
-            square.skeleCount ++
-        } 
-
-        //count square below right
-        if (index < numberOfCells && index < numberOfCells - numberOfColumns && index % numberOfColumns !== numberOfColumns - 1 && board[index + numberOfColumns + 1].isSkeleton) {
-            square.skeleCount ++
-        }
-      
-        if (square.skeleCount > 0 && !square.isSkeleton) {
-        square.cell.innerHTML = square.skeleCount
-        } else {
-            // square.cell.innerHTML = ''
-        }
-
-// if square.skeleCount remove it
-
+    board.forEach((square) => {
+        square.neighbours.forEach((neighbour) => {
+            if (neighbour.isSkeleton) {
+                square.skeleCount ++
+            }
+            if (square.skeleCount > 0 && !square.isSkeleton) {
+                square.cell.innerHTML = square.skeleCount
+            }
+        })
     })
 }
 
-calcNearbySkeletons()
-
-const handleClick = (evt) => {
-    evt.target.classList.add("revealed")
-    console.log(evt.target.id)
+const renderBoard = () => {
+    generateBoard()
+    getNeighbours()
+    placeSkeletons()
+    calcNearbySkeletons()
 }
+
+renderBoard()
+
+const revealCell = (evt) => {
+    board[evt.target.id].revealed = true
+    evt.target.classList.add("revealed")
+    if (board[evt.target.id].skeleCount === 0) {
+        // console.log('X')
+        board[evt.target.id].neighbours.forEach((neighbour) => {
+            revealCell(board[neighbour.cell.id])
+            // console.log(neighbour.cell.id)
+        })
+    }
+}
+
+
 
 //add neightbours to object... use index... step 1 idewntify empty cells then do recursion
 
@@ -140,7 +150,7 @@ const handleClick = (evt) => {
 
 
 board.forEach((square) => {
-    square.cell.addEventListener('click', handleClick)
+    square.cell.addEventListener('click', revealCell)
 })
 
 
@@ -148,7 +158,7 @@ board.forEach((square) => {
 
 
 
-//-------------------------- Old/unused code
+//-------------------------- Old/replaced code
 
 //create a board - this should be an array within an array and create a grid visible on the screen
 // const generateBoard = () => {
@@ -173,6 +183,58 @@ board.forEach((square) => {
 
 //-------------------------- Event Listeners
 
+// const calcNearbySkeletons = () => {
+//     board.forEach((square, index) => {      
 
+//         //count square to left
+//         if (index > 0 && index % numberOfColumns !== 0 && board[index - 1].isSkeleton) {
+//             square.skeleCount ++
+//         } 
+        
+//         //count square to right
+//         if (index < numberOfCells && index % numberOfColumns !== numberOfColumns - 1 && board[index + 1].isSkeleton) {
+//             square.skeleCount ++
+//         }
+        
+//         //count square above
+//         if (index > numberOfColumns && board[index - numberOfColumns].isSkeleton) {
+//             square.skeleCount ++
+//         }
+
+//         //count square below
+//         if (index < numberOfCells - numberOfColumns && board[index + numberOfColumns].isSkeleton) {
+//             square.skeleCount ++
+//         }
+
+//         //count square above left
+//         if (index > 0 && index > numberOfColumns && index % numberOfColumns !== 0 && board[index - numberOfColumns - 1].isSkeleton) {
+//             square.skeleCount ++
+//         }
+
+//         //count square above right
+//         if (index < numberOfCells && index > numberOfColumns && index % numberOfColumns !== numberOfColumns - 1 && board[index - numberOfColumns + 1].isSkeleton) {
+//             square.skeleCount ++
+//         }
+
+//         //count square below left
+//         if (index > 0 && index < numberOfCells - numberOfColumns && index % numberOfColumns !== 0 && board[index + numberOfColumns - 1].isSkeleton) {
+//             square.skeleCount ++
+//         } 
+
+//         //count square below right
+//         if (index < numberOfCells && index < numberOfCells - numberOfColumns && index % numberOfColumns !== numberOfColumns - 1 && board[index + numberOfColumns + 1].isSkeleton) {
+//             square.skeleCount ++
+//         }
+      
+//         if (square.skeleCount > 0 && !square.isSkeleton) {
+//         square.cell.innerHTML = square.skeleCount
+//         } else {
+//             // square.cell.innerHTML = ''
+//         }
+
+// // if square.skeleCount remove it
+
+//     })
+// }
 
 

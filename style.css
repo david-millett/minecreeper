@@ -29,10 +29,10 @@ main {
     display: inline-block;
 }
 
-.skeleton {
-    background-color: red;
-}
-
 .revealed {
     background-color: darkkhaki;
+}
+
+.skeleton {
+    background-color: red;
 }
