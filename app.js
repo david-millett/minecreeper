@@ -130,19 +130,27 @@ const renderBoard = () => {
 
 renderBoard()
 
-const revealCell = (evt) => {
-    board[evt.target.id].revealed = true
-    evt.target.classList.add("revealed")
-    if (board[evt.target.id].skeleCount === 0) {
-        // console.log('X')
-        board[evt.target.id].neighbours.forEach((neighbour) => {
-            revealCell(board[neighbour.cell.id])
-            // console.log(neighbour.cell.id)
+const revealCell = (idx) => {
+    board[idx].revealed = true
+    if (board[idx].skeleCount === 0) {
+
+        board[idx].neighbours.forEach((neighbour) => {
+            if (!board[neighbour.cell.id].revealed) {
+            revealCell(neighbour.cell.id)
+            console.log(neighbour.cell.id)
+        }
         })
     }
+    board.forEach((square) => {
+        if (square.revealed) {
+            square.cell.classList.add('revealed')
+        }
+    })
 }
 
-
+const handleClick = (evt) => {
+    revealCell(evt.target.id)
+}
 
 //add neightbours to object... use index... step 1 idewntify empty cells then do recursion
 
@@ -150,7 +158,7 @@ const revealCell = (evt) => {
 
 
 board.forEach((square) => {
-    square.cell.addEventListener('click', revealCell)
+    square.cell.addEventListener('click', handleClick)
 })
 
 
