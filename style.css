@@ -19,20 +19,30 @@ main {
 }
 
 #gameboard {
-    width: 600px;
-    height: 600px;
-    /* border: 1px solid black */
+    /* width: 600px;
+    height: 600px; */
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto auto auto auto;
+    /* column-gap: 0px; */
 }
 
 .cell {
     border: 1px solid black;
-    display: inline-block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    font-size: 25px;
+    /* gap: 0 0; */
+    /* font-size: 0;   */
 }
 
 .revealed {
     background-color: darkkhaki;
+    color: black;
 }
 
-.skeleton {
+.revealed.skeleton {
     background-color: red;
 }

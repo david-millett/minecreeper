@@ -13,17 +13,11 @@ let numberOfColumns = 9
 let numberOfCells = numberOfRows * numberOfColumns
 let numberOfSkeletons = 10
 
-
-
 //-------------------------- Cached Element References
 
 const gameboardEl = document.querySelector("#gameboard")
 
-
-
-
-
- 
+const messageEl = document.querySelector("#winLoseMsg")
 
 //-------------------------- Functions
 
@@ -31,11 +25,12 @@ const generateBoard = () => {
     for (let i = 0; i < numberOfCells; i++) {
         const cell = document.createElement("div")
         cell.classList.add("cell")
-        cell.innerText = '/'
-
+        // cell.innerText = '/'
         cell.id = i
-        cell.style.height = `${100 / numberOfRows}%`
-        cell.style.width = `${100 / numberOfColumns}%`
+        // cell.style.height = `${100 / numberOfRows}%`
+        // cell.style.width = `${100 / numberOfColumns}%`
+        // gameboardEl.style.
+
         const cellObj = {
             cell,
             isSkeleton: false,
@@ -63,7 +58,7 @@ const getNeighbours = () => {
         }
         
         //neighbour above
-        if (index > numberOfColumns) {
+        if (index >= numberOfColumns) {
             square.neighbours.push(board[index - numberOfColumns])
         }
 
@@ -73,12 +68,12 @@ const getNeighbours = () => {
         }
 
         //neighbour above left
-        if (index > 0 && index > numberOfColumns && index % numberOfColumns !== 0) {
+        if (index > 0 && index >= numberOfColumns && index % numberOfColumns !== 0) {
             square.neighbours.push(board[index - numberOfColumns - 1])
         }
 
         //neighbour above right
-        if (index < numberOfCells && index > numberOfColumns && index % numberOfColumns !== numberOfColumns - 1) {
+        if (index < numberOfCells && index >= numberOfColumns && index % numberOfColumns !== numberOfColumns - 1) {
             square.neighbours.push(board[index - numberOfColumns + 1])
         }
 
@@ -101,7 +96,7 @@ const placeSkeletons = () => {
         if (!board[placement].isSkeleton) {
             board[placement].isSkeleton = true
             board[placement].cell.classList.add("skeleton")
-            board[placement].cell.innerText = "X"
+            // board[placement].cell.innerText = "X"
             skeletonsPlaced++
         }
         // console.log(placement)
@@ -114,30 +109,32 @@ const calcNearbySkeletons = () => {
             if (neighbour.isSkeleton) {
                 square.skeleCount ++
             }
-            if (square.skeleCount > 0 && !square.isSkeleton) {
-                square.cell.innerHTML = square.skeleCount
-            }
+            // if (square.skeleCount > 0 && !square.isSkeleton) {
+            //     square.cell.innerHTML = square.skeleCount
+            // }
         })
     })
 }
 
-const renderBoard = () => {
+const init = () => {
     generateBoard()
     getNeighbours()
     placeSkeletons()
     calcNearbySkeletons()
+    youWin = false
+    gameOver = false
 }
 
-renderBoard()
+init()
+
+//revealCell also floods when clicking on bombs, need to stop this
 
 const revealCell = (idx) => {
     board[idx].revealed = true
     if (board[idx].skeleCount === 0) {
-
         board[idx].neighbours.forEach((neighbour) => {
             if (!board[neighbour.cell.id].revealed) {
             revealCell(neighbour.cell.id)
-            console.log(neighbour.cell.id)
         }
         })
     }
@@ -145,14 +142,61 @@ const revealCell = (idx) => {
         if (square.revealed) {
             square.cell.classList.add('revealed')
         }
+        if (square.revealed && square.skeleCount > 0 && !square.isSkeleton) {
+            square.cell.innerHTML = square.skeleCount
+        }
     })
 }
 
-const handleClick = (evt) => {
-    revealCell(evt.target.id)
+const checkWin = () => {
+    let winCheck = 0
+    board.forEach((square) => {
+        if (square.revealed || square.isSkeleton) {
+            winCheck ++
+        }
+    })
+    if (winCheck === numberOfCells) {
+        youWin = true
+    }
 }
 
-//add neightbours to object... use index... step 1 idewntify empty cells then do recursion
+const checkGameOver = () => {
+    board.forEach((square) => {
+        if (square.isSkeleton && square.revealed) {
+            
+            gameOver = true
+
+            board.forEach((square) => {
+                if (square.isSkeleton) {
+                square.cell.classList.add('revealed')
+            }
+        })
+        }
+    })
+}
+
+const updateMessage = () => {
+    if (gameOver) {
+        messageEl.textContent = "You died..."
+    }
+    
+    if (youWin) {
+        messageEl.textContent = "Well done!"
+    }
+}
+
+const handleClick = (evt) => {
+    if (gameOver || youWin) {
+        return;
+    } else {
+    revealCell(evt.target.id)
+    checkGameOver()
+    checkWin()
+    updateMessage()
+    }
+}
+
+
 
 //-------------------------- Event Listeners
 
