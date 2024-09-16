@@ -1,6 +1,7 @@
 //-------------------------- Constants
 
 const board = []
+console.log(board)
 
 //-------------------------- Variables
 
@@ -19,6 +20,9 @@ let numberOfSkeletons = 10
 const gameboardEl = document.querySelector("#gameboard")
 
 
+
+
+
  
 
 //-------------------------- Functions
@@ -27,7 +31,8 @@ const generateBoard = () => {
     for (let i = 0; i < numberOfCells; i++) {
         const cell = document.createElement("div")
         cell.classList.add("cell")
-        cell.innerText = i
+        cell.innerText = '/'
+
         cell.id = i
         cell.style.height = `${100 / numberOfRows}%`
         cell.style.width = `${100 / numberOfColumns}%`
@@ -36,6 +41,7 @@ const generateBoard = () => {
             isSkeleton: false,
             revealed: false,
             skeleCount: 0,
+            tombstone: false,
         }
         board.push(cellObj)
         gameboardEl.appendChild(cell)
@@ -58,29 +64,91 @@ const placeSkeletons = () => {
     }
 }
 
+
+const getNeighbours = () => {
+
+}
+
+
 placeSkeletons()
 
 
 const calcNearbySkeletons = () => {
     board.forEach((square, index) => {      
-        
+
+        //count square to left
         if (index > 0 && index % numberOfColumns !== 0 && board[index - 1].isSkeleton) {
             square.skeleCount ++
         } 
-
+        
+        //count square to right
         if (index < numberOfCells && index % numberOfColumns !== numberOfColumns - 1 && board[index + 1].isSkeleton) {
             square.skeleCount ++
         }
+        
+        //count square above
+        if (index > numberOfColumns && board[index - numberOfColumns].isSkeleton) {
+            square.skeleCount ++
+        }
 
+        //count square below
+        if (index < numberOfCells - numberOfColumns && board[index + numberOfColumns].isSkeleton) {
+            square.skeleCount ++
+        }
 
+        //count square above left
+        if (index > 0 && index > numberOfColumns && index % numberOfColumns !== 0 && board[index - numberOfColumns - 1].isSkeleton) {
+            square.skeleCount ++
+        }
+
+        //count square above right
+        if (index < numberOfCells && index > numberOfColumns && index % numberOfColumns !== numberOfColumns - 1 && board[index - numberOfColumns + 1].isSkeleton) {
+            square.skeleCount ++
+        }
+
+        //count square below left
+        if (index > 0 && index < numberOfCells - numberOfColumns && index % numberOfColumns !== 0 && board[index + numberOfColumns - 1].isSkeleton) {
+            square.skeleCount ++
+        } 
+
+        //count square below right
+        if (index < numberOfCells && index < numberOfCells - numberOfColumns && index % numberOfColumns !== numberOfColumns - 1 && board[index + numberOfColumns + 1].isSkeleton) {
+            square.skeleCount ++
+        }
+      
+        if (square.skeleCount > 0 && !square.isSkeleton) {
         square.cell.innerHTML = square.skeleCount
+        } else {
+            // square.cell.innerHTML = ''
+        }
+
+// if square.skeleCount remove it
 
     })
 }
 
 calcNearbySkeletons()
 
-console.log(board)
+const handleClick = (evt) => {
+    evt.target.classList.add("revealed")
+    console.log(evt.target.id)
+}
+
+//add neightbours to object... use index... step 1 idewntify empty cells then do recursion
+
+//-------------------------- Event Listeners
+
+
+board.forEach((square) => {
+    square.cell.addEventListener('click', handleClick)
+})
+
+
+
+
+
+
+//-------------------------- Old/unused code
 
 //create a board - this should be an array within an array and create a grid visible on the screen
 // const generateBoard = () => {

@@ -21,7 +21,7 @@ main {
 #gameboard {
     width: 600px;
     height: 600px;
-    border: 1px solid black
+    /* border: 1px solid black */
 }
 
 .cell {
@@ -31,4 +31,8 @@ main {
 
 .skeleton {
     background-color: red;
+}
+
+.revealed {
+    background-color: darkkhaki;
 }
