@@ -3,7 +3,8 @@
 }
 
 body {
-    background-color: beige;
+    background-color: black;
+    color: red;
     margin: 0
 }
 
@@ -13,9 +14,14 @@ h1 {
 }
 
 main {
+    /* width: 270px; */
+}
+
+#theSky {
+    height: 135px;
+    background-color: white;
     display: flex;
     justify-content: center;
-    align-items: center;
 }
 
 #gameboard {
@@ -23,11 +29,15 @@ main {
     height: 600px; */
     display: grid;
     grid-template-columns: auto auto auto auto auto auto auto auto auto;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #C38FC5    ;
     /* column-gap: 0px; */
 }
 
 .cell {
-    border: 1px solid black;
+    border: 1px solid #C38FC5    ;
+    background-color: #4C7555;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -38,11 +48,15 @@ main {
     /* font-size: 0;   */
 }
 
+.tombstone {
+    background-color: yellow;
+}
+
 .revealed {
-    background-color: darkkhaki;
-    color: black;
+    background-color: #1C4525;
 }
 
 .revealed.skeleton {
     background-color: red;
 }
+

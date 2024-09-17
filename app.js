@@ -12,12 +12,16 @@ let numberOfRows = 9
 let numberOfColumns = 9
 let numberOfCells = numberOfRows * numberOfColumns
 let numberOfSkeletons = 10
+let remainingSkeletons = numberOfSkeletons
 
 //-------------------------- Cached Element References
 
 const gameboardEl = document.querySelector("#gameboard")
-
 const messageEl = document.querySelector("#winLoseMsg")
+const replayButton = document.querySelector("#replay")
+const easyButton = document.querySelector("#easy")
+const medButton = document.querySelector("#medium")
+const hardButton = document.querySelector("#hard")
 
 //-------------------------- Functions
 
@@ -25,7 +29,6 @@ const generateBoard = () => {
     for (let i = 0; i < numberOfCells; i++) {
         const cell = document.createElement("div")
         cell.classList.add("cell")
-        // cell.innerText = '/'
         cell.id = i
         // cell.style.height = `${100 / numberOfRows}%`
         // cell.style.width = `${100 / numberOfColumns}%`
@@ -96,10 +99,8 @@ const placeSkeletons = () => {
         if (!board[placement].isSkeleton) {
             board[placement].isSkeleton = true
             board[placement].cell.classList.add("skeleton")
-            // board[placement].cell.innerText = "X"
             skeletonsPlaced++
         }
-        // console.log(placement)
     }
 }
 
@@ -109,9 +110,6 @@ const calcNearbySkeletons = () => {
             if (neighbour.isSkeleton) {
                 square.skeleCount ++
             }
-            // if (square.skeleCount > 0 && !square.isSkeleton) {
-            //     square.cell.innerHTML = square.skeleCount
-            // }
         })
     })
 }
@@ -127,11 +125,9 @@ const init = () => {
 
 init()
 
-//revealCell also floods when clicking on bombs, need to stop this
-
 const revealCell = (idx) => {
     board[idx].revealed = true
-    if (board[idx].skeleCount === 0) {
+    if (board[idx].skeleCount === 0 && !board[idx].isSkeleton) {
         board[idx].neighbours.forEach((neighbour) => {
             if (!board[neighbour.cell.id].revealed) {
             revealCell(neighbour.cell.id)
@@ -186,7 +182,7 @@ const updateMessage = () => {
 }
 
 const handleClick = (evt) => {
-    if (gameOver || youWin) {
+    if (gameOver || youWin || board[evt.target.id].tombstone) {
         return;
     } else {
     revealCell(evt.target.id)
@@ -196,18 +192,42 @@ const handleClick = (evt) => {
     }
 }
 
+const toggleTombstone = (idx) => {
+    board[idx].cell.classList.toggle('tombstone')
+    if (board[idx].cell.classList.contains('tombstone')) {
+        board[idx].tombstone = true
+    } else {
+        board[idx].tombstone = false
+    }
+}
 
+
+const handleRightClick = (evt) => {
+    evt.preventDefault()
+    if (gameOver || youWin) {
+        return;
+    } else {
+    toggleTombstone(evt.target.id)
+}}
+
+const reset = () => {
+    
+}
+
+const replay = () => {
+    reset()
+    init()
+}
 
 //-------------------------- Event Listeners
 
 
 board.forEach((square) => {
     square.cell.addEventListener('click', handleClick)
+    square.cell.addEventListener('contextmenu', handleRightClick)
 })
 
-
-
-
+replayButton.addEventListener('click', replay)
 
 
 //-------------------------- Old/replaced code
