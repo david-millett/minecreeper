@@ -20,8 +20,8 @@ main {
 #theSky {
     height: 135px;
     background-color: white;
-    display: flex;
-    justify-content: center;
+    /* display: flex;
+    justify-content: center; */
 }
 
 #gameboard {

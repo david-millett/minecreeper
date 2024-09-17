@@ -12,12 +12,15 @@ let numberOfRows = 9
 let numberOfColumns = 9
 let numberOfCells = numberOfRows * numberOfColumns
 let numberOfSkeletons = 10
-let remainingSkeletons = numberOfSkeletons
+let remainingSkeletons
 
 //-------------------------- Cached Element References
 
 const gameboardEl = document.querySelector("#gameboard")
 const messageEl = document.querySelector("#winLoseMsg")
+const skeleCountEl = document.querySelector("#skeletonCount")
+console.dir(skeleCountEl)
+
 const replayButton = document.querySelector("#replay")
 const easyButton = document.querySelector("#easy")
 const medButton = document.querySelector("#medium")
@@ -33,7 +36,6 @@ const generateBoard = () => {
         // cell.style.height = `${100 / numberOfRows}%`
         // cell.style.width = `${100 / numberOfColumns}%`
         // gameboardEl.style.
-
         const cellObj = {
             cell,
             isSkeleton: false,
@@ -114,11 +116,22 @@ const calcNearbySkeletons = () => {
     })
 }
 
+const updateCounter = () => {
+    skeleCount = numberOfSkeletons
+    board.forEach((square) => {
+        if (square.tombstone) {
+            skeleCount --
+        }
+    })  
+    skeleCountEl.textContent = `Remaining: ${skeleCount}`
+}
+
 const init = () => {
     generateBoard()
     getNeighbours()
     placeSkeletons()
     calcNearbySkeletons()
+    updateCounter()
     youWin = false
     gameOver = false
 }
@@ -153,6 +166,15 @@ const checkWin = () => {
     })
     if (winCheck === numberOfCells) {
         youWin = true
+        //assign tombstones to leftover skeletons
+        board.forEach((square) => {
+            if (square.isSkeleton) {
+            square.tombstone = true
+            square.cell.classList.add('tombstone')
+        }
+    })
+        //make skeleCount 0
+        updateCounter()
     }
 }
 
@@ -208,15 +230,19 @@ const handleRightClick = (evt) => {
         return;
     } else {
     toggleTombstone(evt.target.id)
-}}
-
-const reset = () => {
-    
+    }
+    updateCounter()
 }
 
+
 const replay = () => {
-    reset()
-    init()
+    location.reload()
+    // init()
+}
+
+const changeDifficulty = () => {
+    numberOfRows = 10
+    location.reload()
 }
 
 //-------------------------- Event Listeners
@@ -228,6 +254,7 @@ board.forEach((square) => {
 })
 
 replayButton.addEventListener('click', replay)
+easyButton.addEventListener('click', changeDifficulty)
 
 
 //-------------------------- Old/replaced code
