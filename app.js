@@ -183,10 +183,16 @@ const checkGameOver = () => {
         if (square.isSkeleton && square.revealed) {
             
             gameOver = true
-
+            
+            //reveal all skeletons
             board.forEach((square) => {
                 if (square.isSkeleton) {
                 square.cell.classList.add('revealed')
+            }
+
+            //reveal all mistakes
+            if (!square.isSkeleton && square.tombstone) {
+                square.cell.classList.add('oops')
             }
         })
         }
@@ -233,7 +239,6 @@ const handleRightClick = (evt) => {
     }
     updateCounter()
 }
-
 
 const replay = () => {
     location.reload()
