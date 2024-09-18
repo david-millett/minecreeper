@@ -9,6 +9,7 @@ body {
 }
 
 #modalMenu {
+    display: none; /* remove this line when done testing */
     position: fixed;
     z-index: 1;
     left: 0;
@@ -45,8 +46,8 @@ main {
 }
 
 #gameboard {
-    width: 270px;
-    height: 270px;
+    width: 600px;
+    height: 600px;
     /* display: grid;
     grid-template-columns: auto auto auto auto auto auto auto auto auto;
     justify-content: center; */
@@ -81,6 +82,10 @@ main {
 }
 
 .revealed {
+    background-color: #1C4525;
+}
+
+.revealed:hover {
     background-color: #1C4525;
 }
 

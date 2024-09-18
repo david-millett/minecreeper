@@ -31,13 +31,6 @@ let numberOfCells = numberOfRows * numberOfColumns
 let numberOfSkeletons = 10
 let remainingSkeletons
 
-let currentDifficulty
-
-
-
-
-
-
 //-------------------------- Cached Element References
 
 const gameboardEl = document.querySelector("#gameboard")
@@ -48,16 +41,9 @@ const modalMenuEl = document.querySelector("#modalMenu")
 const modalButtonEl = document.querySelector("#menuPlay")
 
 const replayButtonEl = document.querySelector("#replay")
-
-
-const easyButton = document.querySelector("#easy")
-const medButton = document.querySelector("#medium")
-const hardButton = document.querySelector("#hard")
+const difficultyButtonEls = document.querySelectorAll(".diffButton")
 
 //-------------------------- Functions
-
-
-
 
 const generateBoard = () => {
     for (let i = 0; i < numberOfCells; i++) {
@@ -79,8 +65,6 @@ const generateBoard = () => {
         gameboardEl.appendChild(cell)
     }
 }
-
-
 
 const getNeighbours = () => {
     board.forEach((square, index) => {      
@@ -159,8 +143,6 @@ const updateCounter = () => {
     skeleCountEl.textContent = `Remaining: ${skeleCount}`
 }
 
-
-
 const firstRevealCheck = () => {
     let firstClickCheck = 0
     board.forEach((square) => {
@@ -226,15 +208,12 @@ const checkWin = () => {
 const checkGameOver = () => {
     board.forEach((square) => {
         if (square.isSkeleton && square.revealed) {
-            
             gameOver = true
-            
             //reveal all skeletons
             board.forEach((square) => {
                 if (square.isSkeleton) {
                 square.cell.classList.add('revealed')
             }
-
             //reveal all mistakes
             if (!square.isSkeleton && square.tombstone) {
                 square.cell.classList.add('oops')
@@ -248,7 +227,6 @@ const updateMessage = () => {
     if (gameOver) {
         messageEl.textContent = "You died..."
     }
-    
     if (youWin) {
         messageEl.textContent = "Well done!"
     }
@@ -274,7 +252,6 @@ const toggleTombstone = (idx) => {
         board[idx].tombstone = false
     }
 }
-
 
 const handleRightClick = (evt) => {
     evt.preventDefault()
@@ -317,35 +294,23 @@ const hideMenu = () => {
     modalMenu.style.display = "none"
 }
 
-
-
-const changeDifficulty = () => {
-    numberOfRows = 10
-    location.reload()
+const changeDifficulty = (evt) => {
+    numberOfColumns = difficultySettings[evt.target.id].numberOfColumns
+    numberOfRows = difficultySettings[evt.target.id].numberOfRows
+    numberOfSkeletons = difficultySettings[evt.target.id].numberOfSkeletons
+    numberOfCells = numberOfRows * numberOfColumns
+    init()
 }
 
 //-------------------------- Event Listeners
 
-
-
-
-
 replayButtonEl.addEventListener('click', init)
-
 modalButtonEl.addEventListener('click', hideMenu)
+difficultyButtonEls.forEach((difficultyButtonEl) => {
+    difficultyButtonEl.addEventListener('click', changeDifficulty)
+})
 
+//-------------------------- To do list
 
-easyButton.addEventListener('click', changeDifficulty)
-
-
-//-------------------------- Old/replaced code
-
-
-
-//make dynamic board
-
-//replay
 
 //make it so first click never fails
-
-//make menu page
