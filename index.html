@@ -8,6 +8,13 @@
     <title>Minecreeper</title>
 </head>
 <body>
+    <div id="modalMenu">
+        <h1>Minecreeper</h1>
+        <p>As the clock strikes midnight at the graveyard, the restless undead have awakened and thirst for blood!</p>
+        <p>Avoid the undead and right click to mark their locations with tombstones to help them achieve eternal rest.</p>
+        <p>Your inner eye tells you how many undead lurk next to each square...</p>
+        <button id="menuPlay">PLAY</button>
+    </div>
     <header>
         <h1>Minecreeper</h1>
     </header>
@@ -21,12 +28,14 @@
             </div>
             <p id="winLoseMsg"></p>
         </div>
-        <div id="gameboard"></div>
-        <div id="buttons">
+        <div id="'theground">
+            <div id="gameboard"></div>
+        </div>
+            <div id="buttons">
             <button id="replay">Replay</button>
-            <button id="easy">Easy</button>
-            <button id="medium">Medium</button>
-            <button id="hard">Hard</button>
+            <button id="easy" class="diffButton">Easy</button>
+            <button id="medium" class="diffButton">Medium</button>
+            <button id="hard" class="diffButton">Hard</button>
         </div>
     </main>
 </body>

@@ -1,9 +1,26 @@
 //-------------------------- Constants
 
-const board = []
-console.log(board)
+const difficultySettings = {
+    easy: {
+        numberOfRows: 9,
+        numberOfColumns: 9,
+        numberOfSkeletons: 10,
+    },
+    medium: {
+        numberOfRows: 16,
+        numberOfColumns: 16,
+        numberOfSkeletons: 40,
+    },
+    hard: {
+        numberOfRows: 30,
+        numberOfColumns: 16,
+        numberOfSkeletons: 99,
+    },
+}
 
 //-------------------------- Variables
+
+let board
 
 let youWin
 let gameOver
@@ -14,27 +31,41 @@ let numberOfCells = numberOfRows * numberOfColumns
 let numberOfSkeletons = 10
 let remainingSkeletons
 
+let currentDifficulty
+
+
+
+
+
+
 //-------------------------- Cached Element References
 
 const gameboardEl = document.querySelector("#gameboard")
 const messageEl = document.querySelector("#winLoseMsg")
 const skeleCountEl = document.querySelector("#skeletonCount")
-console.dir(skeleCountEl)
 
-const replayButton = document.querySelector("#replay")
+const modalMenuEl = document.querySelector("#modalMenu")
+const modalButtonEl = document.querySelector("#menuPlay")
+
+const replayButtonEl = document.querySelector("#replay")
+
+
 const easyButton = document.querySelector("#easy")
 const medButton = document.querySelector("#medium")
 const hardButton = document.querySelector("#hard")
 
 //-------------------------- Functions
 
+
+
+
 const generateBoard = () => {
     for (let i = 0; i < numberOfCells; i++) {
         const cell = document.createElement("div")
         cell.classList.add("cell")
         cell.id = i
-        // cell.style.height = `${100 / numberOfRows}%`
-        // cell.style.width = `${100 / numberOfColumns}%`
+        cell.style.height = `${100 / numberOfRows}%`
+        cell.style.width = `${100 / numberOfColumns}%`
         // gameboardEl.style.
         const cellObj = {
             cell,
@@ -48,6 +79,8 @@ const generateBoard = () => {
         gameboardEl.appendChild(cell)
     }
 }
+
+
 
 const getNeighbours = () => {
     board.forEach((square, index) => {      
@@ -126,17 +159,26 @@ const updateCounter = () => {
     skeleCountEl.textContent = `Remaining: ${skeleCount}`
 }
 
-const init = () => {
-    generateBoard()
-    getNeighbours()
-    placeSkeletons()
-    calcNearbySkeletons()
-    updateCounter()
-    youWin = false
-    gameOver = false
+
+
+const firstRevealCheck = () => {
+    let firstClickCheck = 0
+    board.forEach((square) => {
+        if (!board.revealed) {
+            firstClickCheck ++
+            console.log(firstClickCheck)
+        }
+    })
+
+    if (firstClickCheck === numberOfCells) {
+        firstReveal()
+     
+
+    }
 }
 
-init()
+// board[idx].isSkeleton
+
 
 const revealCell = (idx) => {
     board[idx].revealed = true
@@ -150,6 +192,9 @@ const revealCell = (idx) => {
     board.forEach((square) => {
         if (square.revealed) {
             square.cell.classList.add('revealed')
+            square.cell.classList.remove('tombstone')
+            square.tombstone = false
+            updateCounter()
         }
         if (square.revealed && square.skeleCount > 0 && !square.isSkeleton) {
             square.cell.innerHTML = square.skeleCount
@@ -213,10 +258,11 @@ const handleClick = (evt) => {
     if (gameOver || youWin || board[evt.target.id].tombstone) {
         return;
     } else {
-    revealCell(evt.target.id)
-    checkGameOver()
-    checkWin()
-    updateMessage()
+        // firstReveal(evt.target.id)
+        revealCell(evt.target.id)
+        checkGameOver()
+        checkWin()
+        updateMessage()
     }
 }
 
@@ -232,7 +278,7 @@ const toggleTombstone = (idx) => {
 
 const handleRightClick = (evt) => {
     evt.preventDefault()
-    if (gameOver || youWin) {
+    if (gameOver || youWin || board[evt.target.id].revealed) {
         return;
     } else {
     toggleTombstone(evt.target.id)
@@ -240,10 +286,38 @@ const handleRightClick = (evt) => {
     updateCounter()
 }
 
-const replay = () => {
-    location.reload()
-    // init()
+const createEventListeners = () => {
+    board.forEach((square) => {
+        square.cell.addEventListener('click', handleClick)
+        square.cell.addEventListener('contextmenu', handleRightClick)
+    })
 }
+
+const resetVariables = () => {
+    gameboardEl.innerHTML = ''
+    board = []
+    messageEl.textContent = ''
+    youWin = false
+    gameOver = false
+}
+
+const init = () => {
+    resetVariables()
+    generateBoard()
+    createEventListeners()
+    getNeighbours()
+    placeSkeletons()
+    calcNearbySkeletons()
+    updateCounter()
+}
+
+init()
+
+const hideMenu = () => {
+    modalMenu.style.display = "none"
+}
+
+
 
 const changeDifficulty = () => {
     numberOfRows = 10
@@ -253,92 +327,25 @@ const changeDifficulty = () => {
 //-------------------------- Event Listeners
 
 
-board.forEach((square) => {
-    square.cell.addEventListener('click', handleClick)
-    square.cell.addEventListener('contextmenu', handleRightClick)
-})
 
-replayButton.addEventListener('click', replay)
+
+
+replayButtonEl.addEventListener('click', init)
+
+modalButtonEl.addEventListener('click', hideMenu)
+
+
 easyButton.addEventListener('click', changeDifficulty)
 
 
 //-------------------------- Old/replaced code
 
-//create a board - this should be an array within an array and create a grid visible on the screen
-// const generateBoard = () => {
-//     const board = []
-//     for (let x = 0; x < numberOfRows; x++) {
-//         const row = []
-//         for (let y = 0; y < numberOfColumns; y++) {
-//             const cellElement = document.createElement("div")
-//             cellElement.className = "cell"
-//             const cell = {
-//                 x,
-//                 y
-//             }
-//             row.push(cell)
-//             gameboardEl.appendChild(cellElement)
-//         }
-//         board.push(row)
-//     }
-//     return board
-// }
 
 
-//-------------------------- Event Listeners
+//make dynamic board
 
-// const calcNearbySkeletons = () => {
-//     board.forEach((square, index) => {      
+//replay
 
-//         //count square to left
-//         if (index > 0 && index % numberOfColumns !== 0 && board[index - 1].isSkeleton) {
-//             square.skeleCount ++
-//         } 
-        
-//         //count square to right
-//         if (index < numberOfCells && index % numberOfColumns !== numberOfColumns - 1 && board[index + 1].isSkeleton) {
-//             square.skeleCount ++
-//         }
-        
-//         //count square above
-//         if (index > numberOfColumns && board[index - numberOfColumns].isSkeleton) {
-//             square.skeleCount ++
-//         }
+//make it so first click never fails
 
-//         //count square below
-//         if (index < numberOfCells - numberOfColumns && board[index + numberOfColumns].isSkeleton) {
-//             square.skeleCount ++
-//         }
-
-//         //count square above left
-//         if (index > 0 && index > numberOfColumns && index % numberOfColumns !== 0 && board[index - numberOfColumns - 1].isSkeleton) {
-//             square.skeleCount ++
-//         }
-
-//         //count square above right
-//         if (index < numberOfCells && index > numberOfColumns && index % numberOfColumns !== numberOfColumns - 1 && board[index - numberOfColumns + 1].isSkeleton) {
-//             square.skeleCount ++
-//         }
-
-//         //count square below left
-//         if (index > 0 && index < numberOfCells - numberOfColumns && index % numberOfColumns !== 0 && board[index + numberOfColumns - 1].isSkeleton) {
-//             square.skeleCount ++
-//         } 
-
-//         //count square below right
-//         if (index < numberOfCells && index < numberOfCells - numberOfColumns && index % numberOfColumns !== numberOfColumns - 1 && board[index + numberOfColumns + 1].isSkeleton) {
-//             square.skeleCount ++
-//         }
-      
-//         if (square.skeleCount > 0 && !square.isSkeleton) {
-//         square.cell.innerHTML = square.skeleCount
-//         } else {
-//             // square.cell.innerHTML = ''
-//         }
-
-// // if square.skeleCount remove it
-
-//     })
-// }
-
-
+//make menu page
