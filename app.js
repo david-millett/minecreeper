@@ -45,6 +45,18 @@ const difficultySettings = {
 
 //-------------------------- Functions
 
+const hideMenu = () => {
+    modalMenu.style.display = "none"
+}
+
+const resetVariables = () => {
+    gameboardEl.innerHTML = ''
+    board = []
+    messageEl.textContent = ''
+    youWin = false
+    gameOver = false
+}
+
 const generateBoard = () => {
     for (let i = 0; i < numberOfCells; i++) {
         const cell = document.createElement("div")
@@ -63,6 +75,13 @@ const generateBoard = () => {
         board.push(cellObj)
         gameboardEl.appendChild(cell)
     }
+}
+
+const createEventListeners = () => {
+    board.forEach((square) => {
+        square.cell.addEventListener('click', handleClick)
+        square.cell.addEventListener('contextmenu', handleRightClick)
+    })
 }
 
 const getNeighbours = () => {
@@ -134,6 +153,33 @@ const updateCounter = () => {
     skeleCountEl.textContent = `Remaining: ${skeleCount}`
 }
 
+const init = () => {
+    resetVariables()
+    generateBoard()
+    createEventListeners()
+    getNeighbours()
+    placeSkeletons()
+    calcNearbySkeletons()
+    updateCounter()
+}
+
+const firstReveal = (idx) => {
+    let firstClickCheck = 0
+    board.forEach((square) => {
+        if (!square.revealed) {
+            firstClickCheck ++
+        }
+    })
+    if (firstClickCheck < numberOfCells) {
+        return;
+    } else if (!board[idx].isSkeleton && board[idx].skeleCount === 0) {
+        revealCell(idx)
+    } else {
+        init()
+        firstReveal(idx)
+    }
+}
+
 const revealCell = (idx) => {
     board[idx].revealed = true
     if (board[idx].skeleCount === 0 && !board[idx].isSkeleton) {
@@ -156,21 +202,22 @@ const revealCell = (idx) => {
     })
 }
 
-const firstReveal = (idx) => {
-    let firstClickCheck = 0
+const checkGameOver = () => {
     board.forEach((square) => {
-        if (!square.revealed) {
-            firstClickCheck ++
+        if (square.isSkeleton && square.revealed) {
+            gameOver = true
+            //reveal all skeletons
+            board.forEach((square) => {
+                if (square.isSkeleton) {
+                square.cell.classList.add('revealed')
+            }
+            //reveal all mistakes
+            if (!square.isSkeleton && square.tombstone) {
+                square.cell.classList.add('oops')
+            }
+        })
         }
     })
-    if (firstClickCheck < numberOfCells) {
-        return;
-    } else if (numberOfCells && !board[idx].isSkeleton && board[idx].skeleCount === 0) {
-        revealCell(idx)
-    } else {
-        init()
-        firstReveal(idx)
-    }
 }
 
 const checkWin = () => {
@@ -192,24 +239,6 @@ const checkWin = () => {
         //make skeleCount 0
         updateCounter()
     }
-}
-
-const checkGameOver = () => {
-    board.forEach((square) => {
-        if (square.isSkeleton && square.revealed) {
-            gameOver = true
-            //reveal all skeletons
-            board.forEach((square) => {
-                if (square.isSkeleton) {
-                square.cell.classList.add('revealed')
-            }
-            //reveal all mistakes
-            if (!square.isSkeleton && square.tombstone) {
-                square.cell.classList.add('oops')
-            }
-        })
-        }
-    })
 }
 
 const updateMessage = () => {
@@ -252,40 +281,8 @@ const handleRightClick = (evt) => {
     updateCounter()
 }
 
-const createEventListeners = () => {
-    board.forEach((square) => {
-        square.cell.addEventListener('click', handleClick)
-        square.cell.addEventListener('contextmenu', handleRightClick)
-    })
-}
-
-const resetVariables = () => {
-    gameboardEl.innerHTML = ''
-    board = []
-    messageEl.textContent = ''
-    youWin = false
-    gameOver = false
-}
-
-const init = () => {
-    resetVariables()
-    generateBoard()
-    createEventListeners()
-    getNeighbours()
-    placeSkeletons()
-    calcNearbySkeletons()
-    updateCounter()
-}
-
-init()
-
-const hideMenu = () => {
-    modalMenu.style.display = "none"
-}
-
 const changeDifficulty = (evt) => {
     let setting = difficultySettings[evt.target.id]
-
     numberOfColumns = setting.columns
     numberOfRows = setting.rows
     numberOfSkeletons = setting.skeletons
@@ -295,6 +292,8 @@ const changeDifficulty = (evt) => {
     theSky.style.width = `${numberOfColumns * 30}px`
     init()
 }
+
+init()
 
 //-------------------------- Event Listeners
 
