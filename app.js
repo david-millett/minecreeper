@@ -1,23 +1,3 @@
-//-------------------------- Constants
-
-const difficultySettings = {
-    easy: {
-        numberOfRows: 9,
-        numberOfColumns: 9,
-        numberOfSkeletons: 10,
-    },
-    medium: {
-        numberOfRows: 16,
-        numberOfColumns: 16,
-        numberOfSkeletons: 40,
-    },
-    hard: {
-        numberOfRows: 30,
-        numberOfColumns: 16,
-        numberOfSkeletons: 99,
-    },
-}
-
 //-------------------------- Variables
 
 let board
@@ -42,6 +22,27 @@ const modalButtonEl = document.querySelector("#menuPlay")
 
 const replayButtonEl = document.querySelector("#replay")
 const difficultyButtonEls = document.querySelectorAll(".diffButton")
+
+//-------------------------- Constants
+
+const difficultySettings = {
+    easy: {
+        rows: 9,
+        columns: 9,
+        skeletons: 10,
+    },
+    medium: {
+        rows: 16,
+        columns: 16,
+        skeletons: 40,
+    },
+    hard: {
+        rows: 16,
+        columns: 30,
+        skeletons: 99,
+    },
+}
+
 
 //-------------------------- Functions
 
@@ -295,17 +296,24 @@ const hideMenu = () => {
 }
 
 const changeDifficulty = (evt) => {
-    numberOfColumns = difficultySettings[evt.target.id].numberOfColumns
-    numberOfRows = difficultySettings[evt.target.id].numberOfRows
-    numberOfSkeletons = difficultySettings[evt.target.id].numberOfSkeletons
+    let setting = difficultySettings[evt.target.id]
+
+    numberOfColumns = setting.columns
+    numberOfRows = setting.rows
+    numberOfSkeletons = setting.skeletons
     numberOfCells = numberOfRows * numberOfColumns
+    gameboard.style.width = `${numberOfColumns * 30}px`
+    gameboard.style.height = `${numberOfRows * 30}px`
+
     init()
 }
 
 //-------------------------- Event Listeners
 
-replayButtonEl.addEventListener('click', init)
 modalButtonEl.addEventListener('click', hideMenu)
+
+replayButtonEl.addEventListener('click', init)
+
 difficultyButtonEls.forEach((difficultyButtonEl) => {
     difficultyButtonEl.addEventListener('click', changeDifficulty)
 })
