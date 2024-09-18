@@ -9,7 +9,7 @@ body {
 }
 
 #modalMenu {
-    display: none; /* remove this line when done testing */
+    display: none;
     position: fixed;
     z-index: 1;
     left: 0;
@@ -65,9 +65,9 @@ h1 {
     color:rgb(249, 84, 84);
     font-size: 25px;
     font-weight: bold;
-    text-shadow: 1px 1px 10px
+    text-shadow: 1px 1px 10px;
     /* gap: 0 0; */
-    /* font-size: 0;   */
+    user-select: none;
 }
 
 .cell:hover {

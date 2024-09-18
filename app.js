@@ -70,6 +70,7 @@ const generateBoard = () => {
             revealed: false,
             skeleCount: 0,
             tombstone: false,
+            tombCount: 0,
             neighbours: [],
         }
         board.push(cellObj)
@@ -81,6 +82,7 @@ const createEventListeners = () => {
     board.forEach((square) => {
         square.cell.addEventListener('click', handleClick)
         square.cell.addEventListener('contextmenu', handleRightClick)
+        square.cell.addEventListener('dblclick', handleDoubleClick)
     })
 }
 
@@ -163,23 +165,6 @@ const init = () => {
     updateCounter()
 }
 
-const firstReveal = (idx) => {
-    let firstClickCheck = 0
-    board.forEach((square) => {
-        if (!square.revealed) {
-            firstClickCheck ++
-        }
-    })
-    if (firstClickCheck < numberOfCells) {
-        return;
-    } else if (!board[idx].isSkeleton && board[idx].skeleCount === 0) {
-        revealCell(idx)
-    } else {
-        init()
-        firstReveal(idx)
-    }
-}
-
 const revealCell = (idx) => {
     board[idx].revealed = true
     if (board[idx].skeleCount === 0 && !board[idx].isSkeleton) {
@@ -200,6 +185,23 @@ const revealCell = (idx) => {
             square.cell.innerHTML = square.skeleCount
         }
     })
+}
+
+const firstReveal = (idx) => {
+    let firstClickCheck = 0
+    board.forEach((square) => {
+        if (!square.revealed) {
+            firstClickCheck ++
+        }
+    })
+    if (firstClickCheck < numberOfCells) {
+        return;
+    } else if (!board[idx].isSkeleton && board[idx].skeleCount === 0) {
+        revealCell(idx)
+    } else {
+        init()
+        firstReveal(idx)
+    }
 }
 
 const checkGameOver = () => {
@@ -271,6 +273,17 @@ const toggleTombstone = (idx) => {
     }
 }
 
+const updateTombCount = () => {
+    board.forEach((square) => {
+        square.tombCount = 0
+        square.neighbours.forEach((neighbour) => {
+            if (neighbour.tombstone) {
+                square.tombCount ++
+            }
+        })
+    })
+}
+
 const handleRightClick = (evt) => {
     evt.preventDefault()
     if (gameOver || youWin || board[evt.target.id].revealed) {
@@ -279,6 +292,7 @@ const handleRightClick = (evt) => {
     toggleTombstone(evt.target.id)
     }
     updateCounter()
+    updateTombCount()
 }
 
 const changeDifficulty = (evt) => {
@@ -293,6 +307,20 @@ const changeDifficulty = (evt) => {
     init()
 }
 
+const handleDoubleClick = (evt) => {
+    let clicked = evt.target.id
+    if (board[clicked].revealed && board[clicked].skeleCount === board[clicked].tombCount) {
+        board[clicked].neighbours.forEach((neighbour) => {
+            if (!neighbour.tombstone) {
+                revealCell(neighbour.cell.id)
+            }
+        })
+    }
+    checkGameOver()
+    checkWin()
+    updateMessage()
+}
+
 init()
 
 //-------------------------- Event Listeners
@@ -304,8 +332,3 @@ replayButtonEl.addEventListener('click', init)
 difficultyButtonEls.forEach((difficultyButtonEl) => {
     difficultyButtonEl.addEventListener('click', changeDifficulty)
 })
-
-//-------------------------- To do list
-
-
-//make it so first click never fails
