@@ -43,7 +43,6 @@ const difficultySettings = {
     },
 }
 
-
 //-------------------------- Functions
 
 const generateBoard = () => {
@@ -53,7 +52,6 @@ const generateBoard = () => {
         cell.id = i
         cell.style.height = `${100 / numberOfRows}%`
         cell.style.width = `${100 / numberOfColumns}%`
-        // gameboardEl.style.
         const cellObj = {
             cell,
             isSkeleton: false,
@@ -69,42 +67,34 @@ const generateBoard = () => {
 
 const getNeighbours = () => {
     board.forEach((square, index) => {      
-
         //neighbour to left
         if (index > 0 && index % numberOfColumns !== 0) {
             square.neighbours.push(board[index - 1])
         } 
-        
         //neighbour to right
         if (index < numberOfCells && index % numberOfColumns !== numberOfColumns - 1) {
             square.neighbours.push(board[index + 1])
         }
-        
         //neighbour above
         if (index >= numberOfColumns) {
             square.neighbours.push(board[index - numberOfColumns])
         }
-
         //neighbour below
         if (index < numberOfCells - numberOfColumns) {
             square.neighbours.push(board[index + numberOfColumns])
         }
-
         //neighbour above left
         if (index > 0 && index >= numberOfColumns && index % numberOfColumns !== 0) {
             square.neighbours.push(board[index - numberOfColumns - 1])
         }
-
         //neighbour above right
         if (index < numberOfCells && index >= numberOfColumns && index % numberOfColumns !== numberOfColumns - 1) {
             square.neighbours.push(board[index - numberOfColumns + 1])
         }
-
         //neighbour below left
         if (index > 0 && index < numberOfCells - numberOfColumns && index % numberOfColumns !== 0) {
             square.neighbours.push(board[index + numberOfColumns - 1])
         } 
-
         //neighbour below right
         if (index < numberOfCells && index < numberOfCells - numberOfColumns && index % numberOfColumns !== numberOfColumns - 1) {
             square.neighbours.push(board[index + numberOfColumns + 1])
@@ -135,7 +125,7 @@ const calcNearbySkeletons = () => {
 }
 
 const updateCounter = () => {
-    skeleCount = numberOfSkeletons
+    let skeleCount = numberOfSkeletons
     board.forEach((square) => {
         if (square.tombstone) {
             skeleCount --
@@ -143,25 +133,6 @@ const updateCounter = () => {
     })  
     skeleCountEl.textContent = `Remaining: ${skeleCount}`
 }
-
-const firstRevealCheck = () => {
-    let firstClickCheck = 0
-    board.forEach((square) => {
-        if (!board.revealed) {
-            firstClickCheck ++
-            console.log(firstClickCheck)
-        }
-    })
-
-    if (firstClickCheck === numberOfCells) {
-        firstReveal()
-     
-
-    }
-}
-
-// board[idx].isSkeleton
-
 
 const revealCell = (idx) => {
     board[idx].revealed = true
@@ -183,6 +154,23 @@ const revealCell = (idx) => {
             square.cell.innerHTML = square.skeleCount
         }
     })
+}
+
+const firstReveal = (idx) => {
+    let firstClickCheck = 0
+    board.forEach((square) => {
+        if (!square.revealed) {
+            firstClickCheck ++
+        }
+    })
+    if (firstClickCheck < numberOfCells) {
+        return;
+    } else if (numberOfCells && !board[idx].isSkeleton && board[idx].skeleCount === 0) {
+        revealCell(idx)
+    } else {
+        init()
+        firstReveal(idx)
+    }
 }
 
 const checkWin = () => {
@@ -237,7 +225,7 @@ const handleClick = (evt) => {
     if (gameOver || youWin || board[evt.target.id].tombstone) {
         return;
     } else {
-        // firstReveal(evt.target.id)
+        firstReveal(evt.target.id)
         revealCell(evt.target.id)
         checkGameOver()
         checkWin()
@@ -304,7 +292,7 @@ const changeDifficulty = (evt) => {
     numberOfCells = numberOfRows * numberOfColumns
     gameboard.style.width = `${numberOfColumns * 30}px`
     gameboard.style.height = `${numberOfRows * 30}px`
-
+    theSky.style.width = `${numberOfColumns * 30}px`
     init()
 }
 
