@@ -10,7 +10,8 @@ body {
     background-color: black;
     color: rgb(237, 81, 81);
     margin: 0;
-    font-family: 'Jersey 10';
+    font-family: 'Jersey 10', sans-serif;
+    user-select: none;
 }
 
 #modalMenu {
@@ -23,38 +24,72 @@ body {
     height: 100%;
     overflow: auto;
     background-color: #000000;
+    display: flex;
+    justify-content: center;
 }
 
+#menuBox {
+    width: 500px;
+    font-size: 30px;
+}
 
+.menuText {
+    color: rgb(232, 233, 201);
+    text-align: center;
+}
+
+#menuPlay {
+    font-size: 60px;
+    color: rgb(237, 81, 81);
+    text-align: center;
+}
+
+#menuPlay:hover {
+    color: rgb(230, 230, 129);
+    text-shadow: 0px 0px 10px;
+    cursor: pointer;
+}
 
 h1 {
     display: flex;
     justify-content: center;
     font-size: 80px;
+    margin-bottom: 30px;
 }
 
 #theSky {
     width: 270px;
     height: 135px;
-    background-color: white;
-    /* display: flex; */
-    /* justify-content: center; */
+    background-color: rgb(65, 90, 152);
+    /* background-color: rgb(132, 161, 233); */
+    /* background-image: url('./images/morning.png'); */
+    /* background-size: cover; */
+    /* background-position: center; */
     margin-left: auto;
     margin-right: auto;
+    color: white;
+    font-size: 20px;
 }
+
+#top {
+    display: flex;
+    justify-content: space-between;
+}
+
+#theMoon {
+    width: 80px;
+}
+
+/* #winLoseMsg {
+    position: fixed;
+} */
 
 #gameboard {
     width: 270px;
     height: 270px;
-    /* display: grid;
-    grid-template-columns: auto auto auto auto auto auto auto auto auto;
-    justify-content: center; */
     display: flex;
     flex-wrap: wrap;
-    /* justify-content: center; */
-    /* align-items: center; */
-    border: 1px solid #C38FC5    ;
-    /* column-gap: 0px; */
+    border: 1px solid #C38FC5;
     margin-left: auto;
     margin-right: auto;
 }
@@ -66,28 +101,28 @@ h1 {
 }
 
 .cell {
-    border: 1px solid #C38FC5    ;
+    border: 1px solid #d39ad5    ;
     background-color: #4C7555;
     display: flex;
     justify-content: center;
     align-items: center;
-    /* width: 30px;
-    height: 30px; */
-    color: rgb(195, 202, 170);
-    /* color:rgb(230, 117, 65); */
+    color:rgb(233, 230, 192);
     font-size: 25px;
     font-weight: bold;
-    /* text-shadow: 0px 0px 10px; */
     animation-name: textFlicker;
-    animation-duration: 2s;
+    animation-duration: 3s;
     animation-iteration-count: infinite;
-    /* gap: 0 0; */
-    user-select: none;
+    /* user-select: none; */
 }
 
 .cell:hover {
     /* border-color: yellow; */
     background-color: #7f9984;
+    /* background-color: #ffea81; */
+}
+
+.cell:active {
+    background-color: #42684a;
 }
 
 .revealed {
@@ -98,27 +133,68 @@ h1 {
     background-color: #1C4525;
 }
 
+@keyframes glowyGraves {
+    0% {background-image: url(./images/grave.png);}
+    50% {background-image: url(./images/grave-glow.png);}
+    100% {background-image: url(./images/grave.png);}
+}
+
+
 .tombstone {
-    background-image: url(./images/Grave3.png);
+    /* background-image: url(./images/grave.png); */
     /* background-color: rgb(59, 59, 127); */
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
+    animation-name: glowyGraves;
+    animation-duration: 5s;
 }
 
 .revealed.skeleton {
-    background-color: #B26363;
+    background-image: url(./images/skullgif.gif);
+    background-size: cover;
+    /* background-color: #B26363; */
+    background-color: #343343;
 }
+
+
 
 .oops {
     background-color: maroon;
 }
 
-/* This below isnt actually doing anything... display is stuck to block for some reason */
-
-.buttons {
+#buttons {
     display: flex;
     justify-content: center;
-    margin-left: auto;
-    margin-right: auto;
+    gap: 25px;
+}
+
+#buttons p {
+    /* color: white; */
+    font-size: 25px;
+    margin-top: 30px;
+    height: 35px;
+    border-radius: 10%;
+}
+
+#buttons p:hover {
+    color: rgb(230, 230, 129);
+    text-shadow: 0px 0px 10px;
+    cursor: pointer;
+}
+
+
+
+#winLoseMsg {
+    display: flex;
+    justify-content: center;
+    font-size: 50px;
+    margin: 0 auto 20px auto;
+}
+
+#skeletonCount {
+    margin-left: 10px;
+    margin-top: 0px;
+    margin-bottom: 15px;
+    font-size: 30px;
 }

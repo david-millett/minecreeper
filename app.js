@@ -43,10 +43,21 @@ const difficultySettings = {
     },
 }
 
+const ost = new Audio('./sounds/OBE-MoltenLava.mp3')
+const click = new Audio('./sounds/click.wav')
+const tombNoise = new Audio('./sounds/right-click.flac')
+const scream = new Audio('./sounds/scream.wav')
+const synthClick = new Audio('./sounds/synth-click.wav')
+const success = new Audio('./sounds/success2.ogg')
+
 //-------------------------- Functions
 
 const hideMenu = () => {
     modalMenu.style.display = "none"
+    ost.voume = .05
+    synthClick.play()
+    // ost.play()
+    ost.loop = true
 }
 
 const resetVariables = () => {
@@ -152,7 +163,7 @@ const updateCounter = () => {
             skeleCount --
         }
     })  
-    skeleCountEl.textContent = `Remaining: ${skeleCount}`
+    skeleCountEl.textContent = skeleCount
 }
 
 const init = () => {
@@ -180,6 +191,7 @@ const revealCell = (idx) => {
             square.cell.classList.remove('tombstone')
             square.tombstone = false
             updateCounter()
+            click.play()
         }
         if (square.revealed && square.skeleCount > 0 && !square.isSkeleton) {
             square.cell.innerHTML = square.skeleCount
@@ -216,8 +228,10 @@ const checkGameOver = () => {
             //reveal all mistakes
             if (!square.isSkeleton && square.tombstone) {
                 square.cell.classList.add('oops')
-            }
+            }  
         })
+        //play losing sound
+        scream.play()
         }
     })
 }
@@ -231,11 +245,13 @@ const checkWin = () => {
     })
     if (winCheck === numberOfCells) {
         youWin = true
+        success.play()
         //assign tombstones to leftover skeletons
         board.forEach((square) => {
-            if (square.isSkeleton) {
+            if (square.isSkeleton && !square.tombstone) {
             square.tombstone = true
             square.cell.classList.add('tombstone')
+            tombNoise.play()
         }
     })
         //make skeleCount 0
@@ -253,7 +269,7 @@ const updateMessage = () => {
 }
 
 const handleClick = (evt) => {
-    if (gameOver || youWin || board[evt.target.id].tombstone) {
+    if (gameOver || youWin || board[evt.target.id].tombstone || board[evt.target.id].revealed) {
         return;
     } else {
         firstReveal(evt.target.id)
@@ -271,6 +287,7 @@ const toggleTombstone = (idx) => {
     } else {
         board[idx].tombstone = false
     }
+    tombNoise.play()
 }
 
 const updateTombCount = () => {
@@ -295,6 +312,11 @@ const handleRightClick = (evt) => {
     updateTombCount()
 }
 
+const replay = () => {
+    synthClick.play()
+    init()
+}
+
 const changeDifficulty = (evt) => {
     let setting = difficultySettings[evt.target.id]
     numberOfColumns = setting.columns
@@ -304,6 +326,7 @@ const changeDifficulty = (evt) => {
     gameboard.style.width = `${numberOfColumns * 30}px`
     gameboard.style.height = `${numberOfRows * 30}px`
     theSky.style.width = `${numberOfColumns * 30}px`
+    synthClick.play()
     init()
 }
 
@@ -327,7 +350,7 @@ init()
 
 modalButtonEl.addEventListener('click', hideMenu)
 
-replayButtonEl.addEventListener('click', init)
+replayButtonEl.addEventListener('click', replay)
 
 difficultyButtonEls.forEach((difficultyButtonEl) => {
     difficultyButtonEl.addEventListener('click', changeDifficulty)

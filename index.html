@@ -9,36 +9,34 @@
 </head>
 
 <body>
-
     <div id="modalMenu">
-        <h1>Minecreeper</h1>
-        <p>As the clock strikes midnight at the graveyard, the restless undead have awakened and thirst for blood!</p>
-        <p>Click on plots in the graveyard to reveal the square. Avoid the undead and right click to mark their locations with tombstones to help them achieve eternal rest.</p>
-        <p>Your inner eye tells you how many undead lurk next to each square...</p>
-        <button id="menuPlay">PLAY</button>
+        <div id="menuBox">
+            <h1>Minecreeper</h1>
+            <p class="menuText">The full moon's sickly light illuminates the graveyard, calling to the restless undead who stir in their graves and thirst for blood!</p>
+            <p class="menuText">Click on plots in the graveyard to reveal each square. Avoid the undead and right click to mark their locations with tombstones to help return them to eternal rest.</p>
+            <p class="menuText">Your inner eye tells you how many undead lurk next to each square.</p>
+            <p class="menuText">Best of luck...</p>
+            <p id="menuPlay">PLAY</p>
+        </div>
     </div>
-
     <header>
         <h1>Minecreeper</h1>
     </header>
-
     <main>
         <div id="theSky">
-            <div id="counters">
+            <div id="top">
                 <p id="skeletonCount"></p>
-                <div id="timer"></div>
+                <img id="theMoon" src="./images/moon.png" />
             </div>
-            <p id="winLoseMsg"></p>
+                <p id="winLoseMsg"></p>
         </div>
-            <div id="gameboard"></div>
-            <div id="buttons">
-                <button id="replay">Replay</button>
-                <button id="easy" class="diffButton">Easy</button>
-                <button id="medium" class="diffButton">Medium</button>
-                <button id="hard" class="diffButton">Hard</button>
-            </div>
+        <div id="gameboard"></div>
+        <div id="buttons">
+            <p id="replay">REPLAY</p>
+            <p id="easy" class="diffButton">EASY</p>
+            <p id="medium" class="diffButton">MEDIUM</p>
+            <p id="hard" class="diffButton">HARD</p>
+        </div>
     </main>
-
 </body>
-
 </html>
