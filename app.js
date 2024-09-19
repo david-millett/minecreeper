@@ -1,10 +1,8 @@
 //-------------------------- Variables
 
 let board
-
 let youWin
 let gameOver
-
 let numberOfRows = 9
 let numberOfColumns = 9
 let numberOfCells = numberOfRows * numberOfColumns
@@ -16,10 +14,8 @@ let remainingSkeletons
 const gameboardEl = document.querySelector("#gameboard")
 const messageEl = document.querySelector("#winLoseMsg")
 const skeleCountEl = document.querySelector("#skeletonCount")
-
 const modalMenuEl = document.querySelector("#modalMenu")
 const modalButtonEl = document.querySelector("#menuPlay")
-
 const replayButtonEl = document.querySelector("#replay")
 const difficultyButtonEls = document.querySelectorAll(".diffButton")
 
@@ -48,7 +44,7 @@ const click = new Audio('./sounds/click.wav')
 const tombNoise = new Audio('./sounds/right-click.flac')
 const scream = new Audio('./sounds/scream.wav')
 const synthClick = new Audio('./sounds/synth-click.wav')
-const success = new Audio('./sounds/success2.ogg')
+const success = new Audio('./sounds/success.ogg')
 
 //-------------------------- Functions
 
@@ -56,7 +52,7 @@ const hideMenu = () => {
     modalMenu.style.display = "none"
     ost.voume = .05
     synthClick.play()
-    // ost.play()
+    ost.play()
     ost.loop = true
 }
 
@@ -168,6 +164,9 @@ const updateCounter = () => {
 
 const init = () => {
     resetVariables()
+    theSun.style.display = "none"
+    theMoon.style.display = "inline"
+    theSky.style.backgroundColor = "rgb(65, 90, 152)"
     generateBoard()
     createEventListeners()
     getNeighbours()
@@ -246,6 +245,9 @@ const checkWin = () => {
     if (winCheck === numberOfCells) {
         youWin = true
         success.play()
+        theSun.style.display = "inline"
+        theMoon.style.display = "none"
+        theSky.style.backgroundColor = "rgb(71, 137, 170)"
         //assign tombstones to leftover skeletons
         board.forEach((square) => {
             if (square.isSkeleton && !square.tombstone) {
