@@ -8,7 +8,7 @@
 
 body {
     background-color: black;
-    color: red;
+    color: rgb(237, 81, 81);
     margin: 0;
     font-family: 'Jersey 10';
 }
@@ -117,8 +117,8 @@ h1 {
 /* This below isnt actually doing anything... display is stuck to block for some reason */
 
 .buttons {
-    /* display: flex; */
-    /* justify-content: center; */
+    display: flex;
+    justify-content: center;
     margin-left: auto;
     margin-right: auto;
 }
