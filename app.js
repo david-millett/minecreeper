@@ -62,8 +62,9 @@ const resetVariables = () => {
     messageEl.textContent = ''
     youWin = false
     gameOver = false
-    theSun.style.display = "none"
     theMoon.style.display = "inline"
+    theSun.style.display = "none"
+    bloodMoon.style.display = "none"
     theSky.style.backgroundColor = "rgb(65, 90, 152)"
 }
 
@@ -229,8 +230,10 @@ const checkGameOver = () => {
                 square.cell.classList.add('oops')
             }  
         })
-        //play losing sound
         scream.play()
+        bloodMoon.style.display = "inline"
+        theMoon.style.display = "none"
+        theSky.style.backgroundColor = "rgb(40, 56, 96)"
         }
     })
 }

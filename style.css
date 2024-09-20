@@ -80,6 +80,11 @@ h1 {
     display: none;
 }
 
+#bloodMoon {
+    width: 80px;
+    display: none;
+}
+
 #winLoseMsg {
     display: flex;
     justify-content: center;
