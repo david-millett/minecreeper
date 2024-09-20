@@ -62,6 +62,9 @@ const resetVariables = () => {
     messageEl.textContent = ''
     youWin = false
     gameOver = false
+    theSun.style.display = "none"
+    theMoon.style.display = "inline"
+    theSky.style.backgroundColor = "rgb(65, 90, 152)"
 }
 
 const generateBoard = () => {
@@ -164,9 +167,6 @@ const updateCounter = () => {
 
 const init = () => {
     resetVariables()
-    theSun.style.display = "none"
-    theMoon.style.display = "inline"
-    theSky.style.backgroundColor = "rgb(65, 90, 152)"
     generateBoard()
     createEventListeners()
     getNeighbours()
