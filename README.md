@@ -1,97 +1,288 @@
-# minecreeper
+# Minecreeper - a minesweeper game
 
+![Game in progress](./screenshots/game-in-progress.png)
 
-watch the lesson to see how to style
+## Description
 
+I am pleased to present *Minecreeper*, a browser-based minesweeper-style game with a horror style twist.
 
-Description
-
-Minecreeper
-
-The game 'Minecreeper' is a minesweeper-style game substituing mines for undead skeletons.
+While the traditional game sees players try to avoid clicking on mines and setting down flags to mark their locations, *Minecreeper* substitues mines for undead skeletons - and the flags for tombstones.
 
 Upon opening the game, players are met with a modal menu detailing the game's story and instructions on how to play.
 
-After pressing play, they can click to reveal squares on the graveyard. If a square with no adjacent skeletons is selected, the game will also reveal all nearby squares. The first click is set to always implement this function so that the player always gets a good start and to make playing the game more fun.
+After pressing play, they can click to reveal squares on the game's field, which is styled as a graveyard. If a square with no adjacent skeletons is selected, the game will also reveal all nearby squares.
 
-PLayers right-click to set down a tombstone to mark where they believe a skeleton is hiding.
+The first click is set to always implement this function so that the player always gets a good start and to make playing the game more fun.
 
-For me, especially when playing on higher difficulties, I think having the ability to double click on a revealed square to reveal nearby squares when you have set down the required number of tombstones makes the game much more fun and fast paced - so I am happy to include this feature in Minecreeper.
+Players right-click to set down a tombstone to mark where they believe a skeleton is hiding.
+
+For me, especially when playing minesweeper on higher difficulties, I think having the ability to double click on a revealed square to reveal nearby squares when you have set down the required number of tombstones makes the game much more fun and fast paced - so I am proud to include this feature in *Minecreeper*.
 
 Upon winning or losing the game, the player is greeted with an appropriate sound effect and visual changes to the 'sky' above the graveyard.
 
+## Deployment link
 
-Deployment link
+[Minecreeper](https://david-millett.github.io/minecreeper/)
 
+## Timeframe and working team
 
+This project was created completely by myself, David Millett, over the course of a working week.
 
-Timeframe and working team
+## Technologies used
 
-This project was completely solo over a few days.
+*Minecreeper* was developed in *VS Code* using *HTML*, *CSS*, and *JavaScript*.
 
+Visual assets were edited using the app *Procreate*.
 
-Technologies used
+## Brief
 
-The game was made in VS Code and image editing was done in Procreate.
+This project was compeleted in response to a brief to create a browser-based game as part of a software engineering bootcamp course at General Assembly.
 
+It is the first project I have made using *HTML*, *CSS*, and *JavaScript*.
 
-Brief
+Over the course of a week, we were tasked with:
+* Planning the project
+* Creating a *GitHub* repo to host the project
+* Building the project
+* Deploying the game
+* Presenting the project
 
-This project was compeleted in response to a brief to create a browser-based game as part of a software engineering course at General Assembly. It is the first project I have made using HTML, CSS, and JavaScript.
+## Planning
 
+Before embarking on the project, I wrote a comprehensive plan of how the game would work including a user story, pseudocode, and mock-up/wire frame.
 
-Planning
+From the outset, I had a clear vision for how I wanted the game to look and feel. I decided on a pixel art style using a dark and 'creepy' colour pallette to match the theme.
 
-Before embarking on the project, I wrote a comprehensive plan including the necessary steps to code the project in JavaScript and desiging a mock-up/wire frame in Figma.
+I envisioned the game's field as a literal graveyard, adding the sky on top to add to the effect. The initial layout was drawn on some scrap paper while I was on a long train ride from Yorkshire to London!
 
+![Initial sketch](./screenshots/initial-sketch.jpeg)
 
-Build/code process
+This idea was then developed further and mocked up in *Figma* to produce a wireframe of the game and its various win/lose/menu screens. This really helped me enter the project with a clear view and intention of what I wanted to create.
 
+![Figma plan](./screenshots/figma-plan.png)
 
-Experimented with a few ways of generating the gameboard while also creating an array to help identify the squares.
-Initially using a set sized square and skeleton number. Later on will create a difficulty setting to dynamically change this - will also later on create a landing page from which the board can be generated.
-Settled on a method of generating the board. Created a function to randomly generate numbers and assign these cells as skeletons. Unsure at this stage whether the best way to identify square types is via assigning classes or using boolean elements. At this stage, both are being used to see which is more useful further down the line.
+I broke my user story down into steps which I compiled into *Trello* to track individual tasks as I progressed with the project.
 
-Added an array of neighbours to each cell object, which enabled simpler, more efficient code for some of the other functions.
-Implemented a game over function. Struggling a bit more to identify a win condition.
+![Trello board](./screenshots/trello-board.png)
 
-the main issue I had was implementing the ability to replay and change difficulty
-by necessity, the reset variables function was created and the create event listeners to stop the game breaking
-dynamically changing the size of the grid and ensuring that the grid displayed properly was the hardest part of the project for me personally
+I wrote as detailed a plan of my pseudocode as I could before getting started, so that I knew what steps I would have to take.
 
-I am proud of the double click functionality
+![Pseudocode](./screenshots/pseudocode.png)
+
+After all that, I was raring to get started!
+
+## Build/code process
 
 My step-by-step process was to make a functioning game first, using only basic CSS that demonstrated my code was behaving as intended.
-There were several major steps
-First init - all the steps needed to initilise the game were created, then compiled into the init() function
-Then there were three major ways to interact with the game - clicking, right clicking, and double clicking
-Then I worked on the bulk of the styling in CSS, and added things around the main game functions, such as the modal menu
 
+Once the core game was working and would allow players to win or lose, I went in and added the bulk of the styling and additional functionality, such as the modal menu, sound effects, and additional difficulties.
 
-Challenges
+To me, it was clear that I needed four major functions for the basic game to work - one to initilise the game upon loading the page, and one for each of the three main ways players can interact with the game:
 
-The parts of the project that I anticipated to be the sticking points - this and this - ended up going quite smoothly. Instead, later 
-insert the challenge above here
+* A function to handle clicking on the game's squares
+* A function to handle right clicking
+* A function to handle double clicking
 
-Missing event listeners was the most game-breaking moment
+I then broke down these main functions into smaller steps of individual helper functions. This allowed these main functions to look neater and more organised:
 
-creating the neighbours array is my least favourite part - could be done neater
+```JavaScript
+const init = () => {
+    resetVariables()
+    generateBoard()
+    createEventListeners()
+    getNeighbours()
+    placeSkeletons()
+    calcNearbySkeletons()
+    updateCounter()
+}
+```
+I started with the init function to generate a beginner difficulty-sized board.
 
+I experimented with a few ways of generating the gameboard, and settled on using a `for` loop to generate the required number of cells as a new `<div>`.
 
-Wins
+At the same time, I created an array of objects, each of which stored the new `<div>` and a host of other information that the game would require later.
 
-parts I am most proud of - bring that part down
+```JavaScript
+const generateBoard = () => {
+    for (let i = 0; i < numberOfCells; i++) {
+        const cell = document.createElement("div")
+        cell.classList.add("cell")
+        cell.id = i
+        cell.style.height = `${100 / numberOfRows}%`
+        cell.style.width = `${100 / numberOfColumns}%`
+        const cellObj = {
+            cell,
+            isSkeleton: false,
+            revealed: false,
+            skeleCount: 0,
+            tombstone: false,
+            tombCount: 0,
+            neighbours: [],
+        }
+        board.push(cellObj)
+        gameboardEl.appendChild(cell)
+    }
+}
+```
+This function looked different in the early stages of development - the generated cells initially showed all the skeleton locations and skeleton counts (the numbers that show how many adjacent skeletons each cell has) upfront! This was essential to help me build the game with strong foundations as I added functionality step-by-step.
 
-Creating the array of neighbours was a big moment that enabled many of the future features of the game
+A breakthrough at this stage was deciding to store an array of each cell's neighbours within the object - this really helped me visualise how many future functions of the game would work,including `calcNearbySkeletons()`, an essential function I used to work out the `skeleCount` of each cell.
 
+I created a function called `getNeighbours()` to add each cell's neighbours to the array. This is probably my least 'dry' function, but it caused some difficulties, as not all cells have the same number of neighbours - the ones on the edges have fewer. I therefore used the approach I did to ensure no errors were produced, but I would like to investigate more efficient ways of doing this.
 
-Key learnings/takeaways
+To assign the skeleton locations, a function utilising a `while` loop and `Math.random()` was used:
 
+```JavaScript
+const placeSkeletons = () => {
+    let skeletonsPlaced = 0
+    while (skeletonsPlaced < numberOfSkeletons) {
+        const placement = Math.floor(Math.random() * numberOfCells)
+        if (!board[placement].isSkeleton) {
+            board[placement].isSkeleton = true
+            board[placement].cell.classList.add("skeleton")
+            skeletonsPlaced++
+        }
+    }
+}
+```
+The `if` statement ensured that the loop would keep going in cases where it generated the same number twice so that the required number of skeletons was always created.
 
-Bugs
+At this stage in development, I relied on `console.log()` and `console.dir()` a lot to see what was happening behind the scenes and ensure everything was working as intended.
 
-The game performs as intended in Chrome, but some sound and visual effects may not perform properly in other browsers.
+The next step was to make sure all the information about skeleton locations and numbers was hidden by default. This would allow me to get started on adding the left click functionality of my `handleClick()` function.
 
+One of the most important aspects of this function is to 'reveal' the cell that the player clicks on. I implemented this by making it so that clicking changed the `revealed` element within the cell's object to become `true`.
 
-Future improvements
+A key aspect of minesweeper is its 'flooding' mechanism. This means that when a cell with no adjacent skeletons (or mines) is pressed, all the nearby cells are automatically revealed.
 
+I had to research and implement recursion for my game to handle this.
+
+```JavaScript
+const revealCell = (idx) => {
+    board[idx].revealed = true
+    if (board[idx].skeleCount === 0 && !board[idx].isSkeleton) {
+        board[idx].neighbours.forEach((neighbour) => {
+            if (!board[neighbour.cell.id].revealed) {
+            revealCell(neighbour.cell.id)
+        }
+        })
+    }
+}
+```
+
+As can be seen above, the `revealCell()` function calls itself if it has no adjacent skeletons (a `skeleCount` of `0`) and it is not an assigned skeleton square. After a little tinkering, I found out that the `if` statement was necessary to ensure the function wouldn't go on infinitely and crash the browser.
+
+The `handleClick()` function also calls the `checkWin()` and `checkGameOver()` functions. This is so that the player can get instant feedback after their turn on whether they have won or lost the game.
+
+The game over condition was easy to solve - if a square is flagged as both `revealed` and `isSkeleton`, the game is over.
+
+The win condition was a little trickier to solve - in the end I settled on generating a `winCheck` number. This number adds up the total number of squares that have been revealed or are flagged as skeletons. If this number equals the total number of squares in the grid, the player has won the game.
+
+```JavaScript
+let winCheck = 0
+    board.forEach((square) => {
+        if (square.revealed || square.isSkeleton) {
+            winCheck ++
+        }
+    })
+    if (winCheck === numberOfCells) {
+        youWin = true
+    }
+```
+
+The `handleRightClick()` function allows the player to toggle tombstones onto that square. This also reduces the counter visible in the upper left corner of the game.
+
+At this point, the game was functional at a simple level. This meant I could go in and add more advanced features.
+
+I used recursion again in my `firstReveal()` function. This function ensured that the first click could never give players a game over and would always land on a square with no adjacent skeletons. This means they would always be given a 'block' of cells to get started with, which I think makes the game more fun and less frustrating. It was really important to me that losses held meaning - I didn't want them to feel cheap or unfair.
+
+I also implemented the `handleDoubleClick()` function, which, as I mentioned earlier, I think makes the game much more fun and fast paced - especially on higher difficulties with a bigger board! I am a huge fan of minesweeper, so I have played it a lot.
+
+I also put new difficulties into the game, which required dynamically changing various parameters and the size of certain elements.
+
+It was at this later stage that I started to transform the game into how I wanted with *CSS*.
+
+I really wanted to instill several distinct vibes into the game, including tongue-in-cheek/shlocky horror and retro arcade style. This informed the visual look of the game and my audio choices.
+
+All images are pixel/bit style, which I think meshes well with minesweeper, as the board is itself composed of squares.
+
+To give the game life, I used gifs in some cases and created my own animations in others - for example to make it look like the tombstones were glowing. This was achieved by creating different stills which were then linked together using `#keyframes` in *CSS*.
+
+Sound effects were added, including a shrill scream when players lose. A fast paced bit-tune style soundtrack was selected - I really wanted to instil a sense of urgency and frenetic energy into the game, which I hope this music helps achieve!
+
+One of the final features added into the game was the setting 'the sky' to dynamically change when the player wins or loses.
+
+## Challenges
+
+The parts of the project that I anticipated to be the sticking points actually ended up going quite smoothly - it was parts I wasn't expecting that caused the most problems.
+
+Probably the most game-breaking moment throughout the project was implementing the ability to 'replay' the game and change the difficulty.
+
+At first, when I tried to implement the replay, I kept generating multiple non-functioning boards on the screen. The problem was that I wasn't resetting all of the game's variables properly.
+
+This led me to include a new function at the beginning of the `init()` function to ensure everything was comprehensively wiped clean and set to its initial value. 
+
+```JavaScript
+const resetVariables = () => {
+    gameboardEl.innerHTML = ''
+    board = []
+    messageEl.textContent = ''
+    youWin = false
+    gameOver = false
+    theMoon.style.display = "inline"
+    theSun.style.display = "none"
+    bloodMoon.style.display = "none"
+    theSky.style.backgroundColor = "rgb(65, 90, 152)"
+}
+```
+It took some trial and error to ensure that everything that had been changed throughout playing the game was reset to a clean slate.
+
+I also learned that I needed to create a function to re-generate the event listeners attached to the cells of the grid - because the old ones stopped working once the original grid had been destroyed by the `resetVariables()` function. This led to the `generateEventListeners()` formula being added beneath it within the `init()` formula.
+
+Although a struggle at the time, I feel like I learned a lot during this stage of development. Sorting the reset functionality also allowed me to then implement the change difficulty settings properly, as they relied on resetting the board first to work.
+
+## Wins
+
+I am proud of being able to add the double click functionality and making it so that the first click always produces a block of squares, as these were more advanced features.
+
+Implementing the double click was very smooth and quick - it was satisfying because I felt I understood a lot about my game at this point and how it worked. I had to add extra functionality to several previous lines of code to make it work.
+
+This included adding a nearby tombstone count to each object - because I had already done something similar with the nearby skeleton count, it was easy to replicate this.
+
+I am very pleased with the final look and feel of the game, which I hope achieved what I set out to create. I think the visual *win* and *loss* screens are really effective and communicate the state of the game in an appealing and fun way.
+
+![Win and loss screens](./screenshots/win-loss-screens.png)
+
+I think that one of the highlights of minesweeper is its ability to startle the player when they lose - it requires such a degree of concentration and creates such a sense of anticipation that an unexpected loss makes you jump.
+
+I am really happy with the visuals and audio of my loss screen to create this feeling in players.
+
+In addition, I think the changing sky also feeds into the storytelling of the game. This is established in the game's opening menu, which made my test players smile upon reading it. At the end of the day, a game should be enjoyable and fun - and that's what I wanted to make, so... mission accomplished!
+
+## Key learnings/takeaways
+
+As this was my first major project, I learned a lot.
+
+I had a strong plan going in to the project, but now I understand very well why this step is important to allow for plain sailing - I am very convinced ofor how essential this step is for future projects.
+
+I encountered recursion for the first time in this project - and ended up implementing it twice within this project. I feel like I understand this complex idea much better now.
+
+Because my board was an array of objects, I learned a lot about these in and became much more confident in using them. I needed to reference specific elements within specific objects in the array many times, which made using them feel more natural as time went on.
+
+I have also realised importance and extent required to fully reset variables before reinitialising an app.
+
+Finally, going in to this project was like stepping in to the unknown. Before I got started, I had some anxiety about my ability to complete it. Working on it to completion has boosted my confidence greatly - and made me realise that with a little research, problem solving, and an end goal in mind, it is possible to take on complex coding tasks succesfully.
+
+## Bugs
+
+The game performs as intended in Chrome, but some sound and visual effects may not display properly in other browsers.
+
+## Future improvements
+
+As mentioned above, I really wanted to instil a sense of urgency in players while playing the game. A key feature I would like to implement is a timer and score board, which will add to this feeling as players try beat their scores.
+
+Mobile functionality is another aspect I would like to include - there is no right click on mobile, so this could be substitued with a long press.
+
+Minesweeper on higher difficulties has a tendency sometimes to create scenarios where it is impossible for a player to deduce which of two squares features a skeleton/losing square. This forces them to guess - and potentially lose. This feels cheap and disatisfying. To combat this, I thought about giving players a one-time 'special power' to highlight two squares before revealing them.
+
+There are many other ideas I had to build on the game - for example, generating messages of encouragement as the player reveals more squares, revealing skeletons one-by-one upon a loss, and more!
