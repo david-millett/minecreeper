@@ -44,7 +44,7 @@ The minimum requirements were:
 * It must include separate *HTML*, *CSS*, and *JavaScript* data files
 * It must be deployed online so the world can play it
 
-Over the course of a week, we were tasked with:
+Over the course of a week, I was tasked with:
 * Planning the project
 * Creating a *GitHub* repo to host the project
 * Building the project
@@ -53,11 +53,9 @@ Over the course of a week, we were tasked with:
 
 ## Planning
 
-Before embarking on the project, I wrote a comprehensive plan of how the game would work including a user story, pseudocode, and mock-up/wire frame.
+Before embarking on the project, I wrote a comprehensive plan of how the game would work including user stories, pseudocode, and mock-up/wire frame.
 
-From the outset, I had a clear vision for how I wanted the game to look and feel. I decided on a pixel art style using a dark cartoony colour pallette to match the theme.
-
-I envisioned the game's field as a literal graveyard, adding the sky on top to enhance the effect. The initial layout was conceived and drawn on some scrap paper while I was on a long train ride from Yorkshire to London!
+From the outset, I had a clear vision for how I wanted the game to look and feel. I decided on a pixel art style using a dark cartoony colour pallette to match the theme. I envisioned the game's field as a literal graveyard, adding the sky on top to enhance the effect. The initial layout was conceived and drawn on some scrap paper while I was on a long train ride from Yorkshire to London!
 
 ![Initial sketch](./screenshots/initial-sketch.jpeg)
 
@@ -87,7 +85,7 @@ To me, it was clear that I needed four major functions for the basic game to wor
 * A function to handle right clicking
 * A function to handle double clicking
 
-I then broke down these main functions into smaller steps of individual helper functions. This allowed these main functions to look neater and more organised:
+I then broke down these main functions into smaller steps of individual helper functions. This allowed these main functions to look neater and more organised. For example, my `init()` function is comprised completely of helper functions that each perform their own individual task:
 
 ```JavaScript
 const init = () => {
@@ -100,11 +98,11 @@ const init = () => {
     updateCounter()
 }
 ```
-I started with the init function to generate a beginner difficulty-sized board.
+I started with the `init()` function to generate a beginner difficulty-sized board.
 
 I experimented with a few ways of generating the gameboard, and settled on using a `for` loop to generate the required number of cells as a new `<div>`.
 
-At the same time, I created an array of objects, each of which stored the new `<div>` and a host of other information that the game would require later.
+At the same time, I created an array of objects, each of which stored the new `<div>` and a host of other information that the game would require later. These were added to my `board` array.
 
 ```JavaScript
 const generateBoard = () => {
@@ -129,7 +127,7 @@ const generateBoard = () => {
 }
 ```
 
-A breakthrough at this stage was deciding to store an array of each cell's neighbours within the object - this really helped me visualise how many future functions of the game would work, including `calcNearbySkeletons()`, an essential function I used to work out the `skeleCount` of each cell, which calculated the number of adjacent skeletons.
+A breakthrough at this stage was deciding to store an array of each cell's neighbours within the object - this really helped me visualise how many future functions of the game would work, including `calcNearbySkeletons()`, an essential function I used to work out the `skeleCount` of each cell, aka the number of adjacent skeletons.
 
 I created a function called `getNeighbours()` to add each cell's neighbours to the array. This is probably my least 'dry' function, as not all cells have the same number of neighbours - the ones on the edges have fewer. I therefore used the approach I did to ensure no errors were produced, but I would like to investigate more efficient ways of doing this.
 
@@ -240,7 +238,7 @@ const resetVariables = () => {
 ```
 It took some trial and error to ensure that everything that had been changed throughout playing the game was reset to a clean slate.
 
-I also learned that I needed to create a function to re-generate the event listeners attached to the cells of the grid - because the old ones stopped working once the original grid had been destroyed by the `resetVariables()` function. This led to the `generateEventListeners()` formula being added beneath it within the `init()` formula.
+I also learned that I needed to create a function to re-generate the event listeners attached to the cells of the grid - because the old ones stopped working once the original grid had been destroyed by the `resetVariables()` function. This led to the `generateEventListeners()` function being added beneath it within the `init()` function.
 
 Although a struggle at the time, I feel like I learned a lot during this stage of development. Sorting the reset functionality also allowed me to then implement the change difficulty settings properly, as they relied on resetting the board first to work.
 
@@ -272,7 +270,7 @@ I had a strong plan going in to the project, but now I understand very well why 
 
 I encountered recursion for the first time in this project - and ended up implementing it twice. I feel like I understand this complex idea much better now.
 
-Because my board was an array of objects, I learned a lot about these in and became much more confident in using them. I needed to reference specific elements within specific objects in the array many times, which made using them feel more natural as time went on.
+Because my board was an array of objects, I learned a lot about these in and became much more confident in using them and accessing information from them. I needed to reference specific elements within specific objects in the array many times, which made doing so feel more natural as time went on.
 
 I have also realised importance and extent required to fully reset variables before reinitialising an app.
 
