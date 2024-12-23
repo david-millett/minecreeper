@@ -2,13 +2,13 @@
 
 ![Game in progress](./screenshots/game-in-progress.png)
 
-### Deployment link
+### 🔗 Deployment link
 - [Minecreeper](https://david-millett.github.io/minecreeper/)
 
-### Timeframe
+### 📅 Timeframe
 - 5 days
 
-### Working team
+### 🙋 Working team
 - Solo project
 
 ## Description
@@ -20,14 +20,6 @@ Upon opening the game, players are met with a menu detailing the game's backstor
 The first click is set to always implement flood fill so that the player gets a good start. Players right-click to set down tombstones to mark where they believe skeletons are hiding. Especially when playing minesweeper on higher difficulties, I think having the ability to double click on a revealed square to reveal all nearby squares when you have set down the required number of tombstones makes the game much more fun and fast paced - so I am pleased to also include this feature in *Minecreeper*.
 
 Upon winning or losing the game, the player is greeted with an appropriate sound effect and visual changes to the 'sky' above the graveyard.
-
-## Technologies used
-
-* HTML
-* CSS
-* JavaScript
-
-Developed in *VS Code*. Visual assets edited using *Procreate*.
 
 ## Brief
 
@@ -45,6 +37,14 @@ Over the course of a week, I was tasked with:
 * Building the project
 * Deploying the game
 * Presenting the project
+
+## Technologies used
+
+* HTML
+* CSS
+* JavaScript
+
+Developed in *VS Code*. Visual assets edited using *Procreate*.
 
 ## Planning
 
