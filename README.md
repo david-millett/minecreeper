@@ -1,38 +1,33 @@
-# Minecreeper - a minesweeper game
+# 💀 Minecreeper - a minesweeper game
 
 ![Game in progress](./screenshots/game-in-progress.png)
 
+### Deployment link
+- [Minecreeper](https://david-millett.github.io/minecreeper/)
+
+### Timeframe
+- 5 days
+
+### Working team
+- Solo project
+
 ## Description
 
-*Minecreeper* is a browser-based minesweeper-style game with a horror twist.
+*Minecreeper* is a browser-based minesweeper-style game with a horror twist! While the traditional game tasks players with avoiding mines and setting down flags in their places on the grid-based board, *Minecreeper* substitues mines for undead skeletons - and the flags for tombstones.
 
-While the traditional game tasks players with avoiding mines and setting down flags in their places on the grid-based board, *Minecreeper* substitues mines for undead skeletons - and the flags for tombstones.
+Upon opening the game, players are met with a menu detailing the game's simple backstory and instructions on how to play. Players click to reveal squares on the game's field, which is styled as a graveyard. Revealed squares display a number which represents how many skeletons can be found next to it. If a square with no adjacent skeletons is selected, the game will automatically reveal all adjacent squares using a flood fill function.
 
-Upon opening the game, players are met with a menu detailing the game's simple backstory and instructions on how to play.
-
-To play the game, players click to reveal squares on the game's field, which is styled as a graveyard. Revealed squares display a number which represents how many skeletons can be found next to it. If a square with no adjacent skeletons is selected, the game will automatically reveal all adjacent squares using a flood fill function.
-
-The first click is set to always implement this flood fill function so that the player gets a good start and to make playing the game more fun.
-
-Players right-click to set down a tombstone to mark where they believe a skeleton is hiding.
-
-For me, especially when playing minesweeper on higher difficulties, I think having the ability to double click on a revealed square to reveal all nearby squares when you have set down the required number of tombstones makes the game much more fun and fast paced - so I am pleased to also include this feature in *Minecreeper*.
+The first click is set to always implement this flood fill function so that the player gets a good start and to make playing the game more fun. Players right-click to set down a tombstone to mark where they believe a skeleton is hiding. For me, especially when playing minesweeper on higher difficulties, I think having the ability to double click on a revealed square to reveal all nearby squares when you have set down the required number of tombstones makes the game much more fun and fast paced - so I am pleased to also include this feature in *Minecreeper*.
 
 Upon winning or losing the game, the player is greeted with an appropriate sound effect and visual changes to the 'sky' above the graveyard.
 
-## Deployment link
-
-[Minecreeper](https://david-millett.github.io/minecreeper/)
-
-## Timeframe and working team
-
-This was a solo project created over the course of five days.
-
 ## Technologies used
 
-*Minecreeper* was created with *HTML*, *CSS*, and *JavaScript*.
+* HTML
+* CSS
+* JavaScript
 
-It was developed in *VS Code* and some visual assets were edited using the app *Procreate*.
+Developed in *VS Code*. Visual assets edited using *Procreate*.
 
 ## Brief
 
@@ -55,6 +50,8 @@ Over the course of a week, I was tasked with:
 
 Before embarking on the project, I wrote a comprehensive plan of how the game would work including user stories, pseudocode, and mock-up/wire frame.
 
+### Wire frame/design
+
 From the outset, I had a clear vision for how I wanted the game to look and feel. I decided on a pixel art style using a dark cartoony colour pallette to match the theme. I envisioned the game's field as a literal graveyard, adding the sky on top to enhance the effect. The initial layout was conceived and drawn on some scrap paper while I was on a long train ride from Yorkshire to London!
 
 ![Initial sketch](./screenshots/initial-sketch.jpeg)
@@ -63,9 +60,13 @@ This idea was then developed further and mocked up in *Figma* to produce a wiref
 
 ![Figma plan](./screenshots/figma-plan.png)
 
-I broke my user story down into steps which I compiled into *Trello* to track individual tasks as I progressed with the project.
+### User Stories
+
+I broke my user stories down into steps which I compiled into *Trello* to track individual tasks as I progressed with the project.
 
 ![Trello board](./screenshots/trello-board.png)
+
+### Psuedocode
 
 I wrote as detailed a plan of my pseudocode as I could before getting started, so that I knew what steps I would have to take.
 
@@ -75,17 +76,22 @@ After all that, I was raring to get started!
 
 ## Build/code process
 
-My step-by-step process was to make a functioning game first, using only basic CSS that demonstrated my code was behaving as intended.
+My step-by-step process was to make a functioning game first, using only basic CSS that demonstrated my code was behaving as intended. Once I had the core game working and allowing players to win or lose, I could add the bulk of the styling and additional functionality, such as the modal menu, sound effects, and additional difficulties.
 
-Once the core game was working and would allow players to win or lose, I went in and added the bulk of the styling and additional functionality, such as the modal menu, sound effects, and additional difficulties.
+### My main functions
 
-To me, it was clear that I needed four major functions for the basic game to work - one to initilise the game upon loading the page, and one for each of the three main ways players can interact with the game:
+To me, it was clear that I needed four major functions for the basic game to work:
 
+* A function to initialise the game upon loading
 * A function to handle clicking on the game's squares
 * A function to handle right clicking
 * A function to handle double clicking
 
-I then broke down these main functions into smaller steps of individual helper functions. This allowed these main functions to look neater and more organised. For example, my `init()` function is comprised completely of helper functions that each perform their own individual task:
+### Step 1 - Initialising the game
+
+As each of these functions needed to handle quite a lot of actions, I broke each of them down into smaller steps of individual helper functions. This allowed these main functions to look neater and more organised.
+
+For example, my `init()` function is comprised completely of helper functions that each perform their own individual task:
 
 ```JavaScript
 const init = () => {
@@ -266,28 +272,28 @@ In addition, I think the changing sky also feeds into the storytelling of the ga
 
 As this was my first major project, I learned a lot.
 
-I had a strong plan going in to the project, but now I understand very well why this step is important to allow for plain sailing during the process - I am very convinced of how essential this step is for future projects.
+* 📝 **Plan, plan, plan** - I had a strong plan going in to the project, but now I understand very well why this step is important to allow for plain sailing during the process - I am very convinced of how essential this step is for future projects.
 
-I encountered recursion for the first time in this project - and ended up implementing it twice. I feel like I understand this complex idea much better now.
+* ⚡️ **Recursion and new ideas** - I encountered recursion for the first time in this project, and ended up implementing it twice. I feel like I understand this complex idea much better now.
 
-Because my board was an array of objects, I learned a lot about these in and became much more confident in using them and accessing information from them. I needed to reference specific elements within specific objects in the array many times, which made doing so feel more natural as time went on.
+* [{}] **Arrays of objects** - Because my board was an array of objects, I learned a lot about these in and became much more confident in using them and accessing information from them. I needed to reference specific elements within specific objects in the array many times, which made doing so feel more natural as time went on.
 
-I have also realised importance and extent required to fully reset variables before reinitialising an app.
+* 🔁 **Resetting variables** - I have also realised importance and extent required to fully reset variables before reinitialising an app.
 
-Finally, going in to this project was like stepping in to the unknown. Before I got started, I had some anxiety about my ability to complete it. Working on it to completion has boosted my confidence greatly - and made me realise that with a little research, problem solving, and an end goal in mind, it is possible to take on complex coding tasks succesfully.
+* 🤩 **Confidence boost!** - Finally, going in to this project was like stepping in to the unknown. Before I got started, I had some anxiety about my ability to complete it. Working on it to completion has boosted my confidence greatly - and made me realise that with a little research, problem solving, and an end goal in mind, it is possible to take on complex coding tasks succesfully.
 
 ## Bugs
 
-The game performs as intended in Chrome, but some sound and visual effects may not display properly in other browsers.
+The game performs as intended in Chrome, but some audio and visual effects may not display properly in other browsers.
 
 ## Future improvements
 
-As mentioned above, I really wanted to instil a sense of urgency in players while playing the game. A key feature I would like to implement is a timer and score board, which will add to this feeling as players try beat their scores.
+* ⏳ **Timer and scoreboard**  - As mentioned above, I really wanted to instil a sense of urgency in players while playing the game. Adding these will add to this feeling as players try beat their scores.
 
-Mobile functionality is another aspect I would like to include - there is no right click on mobile, so this could be substitued with a long press. Ensuring that the board scales well to a mobile screen may also required some work.
+* 📱 **Mobile functionality** - there is no right click on mobile, so this could be substitued with a long press. Ensuring that the board scales well to a mobile screen may also required some work.
 
-Minesweeper on higher difficulties has a tendency sometimes to create scenarios where it is impossible for a player to deduce which of two squares features a skeleton/losing square. This forces them to guess - and potentially lose. This feels cheap and disatisfying. To combat this, I thought about giving players a one-time 'special power' to highlight two squares before revealing them.
+* 😡 **Avoid cheap losses** - Minesweeper on higher difficulties has a tendency sometimes to create scenarios where it is impossible for a player to deduce which of two squares features a skeleton/losing square. This forces them to guess - and potentially lose. This feels cheap and disatisfying. To combat this, I thought about giving players a one-time 'special power' to highlight two squares before revealing them.
 
-To build on the game's story, there could be sequential levels of difficulty building up to an overall conclusion.
+* 📈 **Progressive levels** - To build on the game's story, there could be sequential levels of difficulty building up to an overall conclusion.
 
-There are many other ideas I had for the game - for example, generating messages of encouragement as the player reveals more squares, revealing skeletons one-by-one upon a loss, and more!
+* 💡 **Other ideas** - There are many other ideas I had for the game. For example, generating messages of encouragement as the player reveals more squares, revealing skeletons one-by-one upon a loss, and more!
