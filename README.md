@@ -15,9 +15,9 @@
 
 *Minecreeper* is a browser-based minesweeper-style game with a horror twist! While the traditional game tasks players with avoiding mines and setting down flags in their places on the grid-based board, *Minecreeper* substitues mines for undead skeletons - and the flags for tombstones.
 
-Upon opening the game, players are met with a menu detailing the game's simple backstory and instructions on how to play. Players click to reveal squares on the game's field, which is styled as a graveyard. Revealed squares display a number which represents how many skeletons can be found next to it. If a square with no adjacent skeletons is selected, the game will automatically reveal all adjacent squares using a flood fill function.
+Upon opening the game, players are met with a menu detailing the game's backstory and instructions on how to play. Players click to reveal squares on the game's field, which is styled as a graveyard. Revealed squares display a number which represents how many skeletons can be found next to it. If a square with no adjacent skeletons is clicked on, the game automatically reveals all adjacent squares using a flood fill function.
 
-The first click is set to always implement this flood fill function so that the player gets a good start and to make playing the game more fun. Players right-click to set down a tombstone to mark where they believe a skeleton is hiding. For me, especially when playing minesweeper on higher difficulties, I think having the ability to double click on a revealed square to reveal all nearby squares when you have set down the required number of tombstones makes the game much more fun and fast paced - so I am pleased to also include this feature in *Minecreeper*.
+The first click is set to always implement flood fill so that the player gets a good start. Players right-click to set down tombstones to mark where they believe skeletons are hiding. Especially when playing minesweeper on higher difficulties, I think having the ability to double click on a revealed square to reveal all nearby squares when you have set down the required number of tombstones makes the game much more fun and fast paced - so I am pleased to also include this feature in *Minecreeper*.
 
 Upon winning or losing the game, the player is greeted with an appropriate sound effect and visual changes to the 'sky' above the graveyard.
 
@@ -52,7 +52,9 @@ Before embarking on the project, I wrote a comprehensive plan of how the game wo
 
 ### Wire frame/design
 
-From the outset, I had a clear vision for how I wanted the game to look and feel. I decided on a pixel art style using a dark cartoony colour pallette to match the theme. I envisioned the game's field as a literal graveyard, adding the sky on top to enhance the effect. The initial layout was conceived and drawn on some scrap paper while I was on a long train ride from Yorkshire to London!
+From the outset, I had a clear vision for how I wanted the game to look and feel. I decided on a pixel art style using a dark cartoony colour pallette to match the theme. I envisioned the game's field as a literal graveyard, adding the sky on top to enhance the effect.
+
+The initial layout was conceived and drawn on some scrap paper while I was on a long train ride from Yorkshire to London!
 
 ![Initial sketch](./screenshots/initial-sketch.jpeg)
 
@@ -89,7 +91,7 @@ To me, it was clear that I needed four major functions for the basic game to wor
 
 ### Step 1 - Initialising the game
 
-As each of these functions needed to handle quite a lot of actions, I broke each of them down into smaller steps of individual helper functions. This allowed these main functions to look neater and more organised, but also gave me a logical step-by-step method of adding each function.
+As each of these functions needed to handle quite a lot of actions, I broke them down into smaller steps of individual helper functions. This allowed the main functions to look neater and more organised, but also gave me a logical step-by-step method of adding each function.
 
 My `init()` function is comprised completely of helper functions that each perform their own individual task:
 
@@ -104,7 +106,7 @@ const init = () => {
     updateCounter()
 }
 ```
-I started by coding the `init()` function to generate a beginner difficulty-sized board. I experimented with a few ways of generating the gameboard, and settled on using a `for` loop to generate the required number of cells as a new `<div>`. At the same time, I created an array of objects, each of which stored the new `<div>` and a host of other information that the game would require later. These were added to my `board` array.
+I started by coding the `init()` function to generate a beginner difficulty-sized board. I experimented with a few ways of doing this, and settled on using a `for` loop to generate the required number of cells as a new `<div>`. At the same time, I created an array of objects, each of which stored the new `<div>` and a host of other information that the game would require later. These were added to my `board` array.
 
 ```JavaScript
 const generateBoard = () => {
@@ -129,7 +131,7 @@ const generateBoard = () => {
 }
 ```
 
-A breakthrough at this stage was deciding to store an array of each cell's neighbours within the object - this really helped me visualise how many future functions of the game would work, including `calcNearbySkeletons()`, an essential function I used to work out the `skeleCount` of each cell, aka the number of adjacent skeletons. I created a function called `getNeighbours()` to add each cell's neighbours to the array. This is probably my least 'dry' function, as not all cells have the same number of neighbours - the ones on the edges have fewer. I therefore used the approach I did to ensure no errors were produced, but I would like to investigate more efficient ways of doing this.
+A breakthrough at this stage was deciding to store an array of each cell's neighbours within the object - this really helped me visualise how many future functions of the game would work, including `calcNearbySkeletons()`, an essential function I used to work out the `skeleCount` of each cell, aka how many of its neighbours contained skeletons. I created a function called `getNeighbours()` to add each cell's neighbours to the array.
 
 To assign the skeleton locations, a function utilising a `while` loop and `Math.random()` was used:
 
@@ -169,7 +171,7 @@ const revealCell = (idx) => {
 }
 ```
 
-As can be seen above, the `revealCell()` function calls itself if it has no adjacent skeletons (a `skeleCount` of `0`) and it is not an assigned skeleton square. After a little tinkering, I found  that adding an `if` statement checking whether the cell had already been revealed was necessary to ensure the function wouldn't go on infinitely and crash the browser.
+As can be seen above, the `revealCell()` function calls itself if it has no adjacent skeletons (a `skeleCount` of `0`) and it is not an assigned skeleton square. After a little tinkering, I found  that adding the `if` statement checking whether the cell had already been revealed ensured that the function wouldn't go on infinitely and crash the browser.
 
 The `handleClick()` function also calls the `checkWin()` and `checkGameOver()` functions. This is so that the player can get instant feedback after their turn on whether they have won or lost the game.
 
@@ -203,7 +205,9 @@ I also put new difficulties into the game, which required dynamically changing v
 
 ### Step 5 - Styling
 
-It was at this later stage that I started to transform the game into how I wanted with *CSS*. I really wanted to instill several distinct vibes into the game, including tongue-in-cheek/shlocky horror and retro arcade style. This informed the visual look of the game and my audio choices. All images are pixel/bit style, which I think meshes well with minesweeper, as the board is itself composed of squares. To give the game life, I used gifs in some cases and created my own animations in others - for example to make it look like the tombstones were glowing. This was achieved by creating different stills which were then linked together using `#keyframes` in *CSS*.
+It was at this later stage that I started to transform the game how I wanted with *CSS*. I really wanted to instill several distinct vibes into the game, including a tongue-in-cheek/shlocky horror and retro arcade style. This informed the visual look of the game and my audio choices.
+
+All images are pixel/bit style, which I think meshes well with minesweeper, as the board is itself composed of squares. To give the game life, I used gifs in some cases and created my own animations in others - for example to make it look like the tombstones were glowing. This was achieved by creating different stills which were then linked together using `#keyframes` in *CSS*.
 
 Sound effects were added, including a shrill scream when players lose. A fast paced bit-tune style soundtrack was selected - I really wanted to instil a sense of urgency and frenetic energy into the game, which I hope this music helps achieve!
 
@@ -232,7 +236,9 @@ const resetVariables = () => {
 ```
 It took some trial and error to ensure that everything that had been changed throughout playing the game was reset to a clean slate.
 
-I also learned that I needed to create a function to re-generate the event listeners attached to the cells of the grid - because the old ones stopped working once the original grid had been destroyed by the `resetVariables()` function. This led to the `generateEventListeners()` function being added beneath it within the `init()` function. Although a struggle at the time, I feel like I learned a lot during this stage of development. Sorting the reset functionality also allowed me to then implement the change difficulty settings properly, as they relied on resetting the board first to work.
+I also learned that I needed to create a function to re-generate the event listeners attached to the cells of the grid - because the old ones stopped working once the original grid had been destroyed by the `resetVariables()` function. This led to the `generateEventListeners()` function being added beneath it within the `init()` function.
+
+Although a struggle at the time, I feel like I learned a lot during this stage of development. Sorting the reset functionality also allowed me to then implement the change difficulty settings properly, as they relied on resetting the board first to work.
 
 ## Wins
 
@@ -248,7 +254,7 @@ I am very pleased with the final look and feel of the game, which I hope achieve
 
 ![Win and loss screens](./screenshots/win-loss-screens.png)
 
-I think that one of the highlights of minesweeper is its ability to startle the player when they lose - it requires such a degree of concentration and creates such a sense of anticipation that an unexpected loss can make the player jump. I am really happy with the visuals and audio of my loss screen to create this feeling in players. In addition, I think the changing sky also feeds into the storytelling of the game. This is established in the game's opening menu, which made my test players smile upon reading it. At the end of the day, a game should be enjoyable and fun - and that's what I wanted to make, so... mission accomplished!
+I think that one of the highlights of minesweeper is its ability to startle the player when they lose - it requires such a degree of concentration that an unexpected loss can make the player jump. I am really happy with the visuals and audio of my loss screen to create this feeling in players. In addition, I think the changing sky also feeds into the storytelling of the game. This is established in the game's opening menu, which made my test players smile upon reading it. At the end of the day, a game should be enjoyable and fun - and that's what I wanted to make, so... mission accomplished!
 
 ## Key learnings/takeaways
 
