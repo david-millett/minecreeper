@@ -89,9 +89,9 @@ To me, it was clear that I needed four major functions for the basic game to wor
 
 ### Step 1 - Initialising the game
 
-As each of these functions needed to handle quite a lot of actions, I broke each of them down into smaller steps of individual helper functions. This allowed these main functions to look neater and more organised.
+As each of these functions needed to handle quite a lot of actions, I broke each of them down into smaller steps of individual helper functions. This allowed these main functions to look neater and more organised, but also gave me a logical step-by-step method of adding each function.
 
-For example, my `init()` function is comprised completely of helper functions that each perform their own individual task:
+My `init()` function is comprised completely of helper functions that each perform their own individual task:
 
 ```JavaScript
 const init = () => {
@@ -104,11 +104,7 @@ const init = () => {
     updateCounter()
 }
 ```
-I started with the `init()` function to generate a beginner difficulty-sized board.
-
-I experimented with a few ways of generating the gameboard, and settled on using a `for` loop to generate the required number of cells as a new `<div>`.
-
-At the same time, I created an array of objects, each of which stored the new `<div>` and a host of other information that the game would require later. These were added to my `board` array.
+I started by coding the `init()` function to generate a beginner difficulty-sized board. I experimented with a few ways of generating the gameboard, and settled on using a `for` loop to generate the required number of cells as a new `<div>`. At the same time, I created an array of objects, each of which stored the new `<div>` and a host of other information that the game would require later. These were added to my `board` array.
 
 ```JavaScript
 const generateBoard = () => {
@@ -133,9 +129,7 @@ const generateBoard = () => {
 }
 ```
 
-A breakthrough at this stage was deciding to store an array of each cell's neighbours within the object - this really helped me visualise how many future functions of the game would work, including `calcNearbySkeletons()`, an essential function I used to work out the `skeleCount` of each cell, aka the number of adjacent skeletons.
-
-I created a function called `getNeighbours()` to add each cell's neighbours to the array. This is probably my least 'dry' function, as not all cells have the same number of neighbours - the ones on the edges have fewer. I therefore used the approach I did to ensure no errors were produced, but I would like to investigate more efficient ways of doing this.
+A breakthrough at this stage was deciding to store an array of each cell's neighbours within the object - this really helped me visualise how many future functions of the game would work, including `calcNearbySkeletons()`, an essential function I used to work out the `skeleCount` of each cell, aka the number of adjacent skeletons. I created a function called `getNeighbours()` to add each cell's neighbours to the array. This is probably my least 'dry' function, as not all cells have the same number of neighbours - the ones on the edges have fewer. I therefore used the approach I did to ensure no errors were produced, but I would like to investigate more efficient ways of doing this.
 
 To assign the skeleton locations, a function utilising a `while` loop and `Math.random()` was used:
 
@@ -156,13 +150,11 @@ The `if` statement ensured that the loop would keep going in cases where it gene
 
 At this stage in development, I relied on `console.log()` and `console.dir()` a lot to see what was happening behind the scenes and ensure everything was working as intended.
 
-The next step was to make sure all the information about skeleton locations and numbers was hidden by default. This would allow me to get started on adding the left click functionality of my `handleClick()` function.
+### Step 2 - Handle click
 
-One of the most important aspects of this function is to 'reveal' the cell that the player clicks on. I implemented this by making it so that clicking changed the `revealed` element within the cell's object to become `true`.
+The main way players interact with the game is through clicking on squares, for which I created a `handleClick()` function. One of the most important aspects of this function is to 'reveal' the cell that the player clicks on. I implemented this by making it so that clicking changed the `revealed` element within the cell's object to become `true` and sets the `innerHTML` to its `skeleCount`.
 
-A key aspect of minesweeper is its 'flooding' mechanism. This means that when a cell with no adjacent skeletons (or mines) is pressed, all the nearby cells are automatically revealed.
-
-I had to research and implement recursion for my game to handle this.
+A key aspect of minesweeper is its 'flooding' mechanism. This means that when a cell with no adjacent skeletons (or mines) is pressed, all the nearby cells are automatically revealed. I had to research and implement recursion for my game to handle this:
 
 ```JavaScript
 const revealCell = (idx) => {
@@ -181,9 +173,7 @@ As can be seen above, the `revealCell()` function calls itself if it has no adja
 
 The `handleClick()` function also calls the `checkWin()` and `checkGameOver()` functions. This is so that the player can get instant feedback after their turn on whether they have won or lost the game.
 
-The game over condition was easy to solve - if a square is flagged as both `revealed` and `isSkeleton`, the game is over.
-
-The win condition was a little trickier to solve - in the end I settled on generating a `winCheck` number. This number adds up the total number of squares that have been revealed or are flagged as skeletons. If this number equals the total number of squares in the grid, the player has won the game.
+The game over condition was easy to solve - if a square is flagged as both `revealed` and `isSkeleton`, the game is over. The win condition was a little trickier to solve - in the end I settled on generating a `winCheck` number. This number adds up the total number of squares that have been revealed or are flagged as skeletons. If this number equals the total number of squares in the grid, the player has won the game.
 
 ```JavaScript
 let winCheck = 0
@@ -197,9 +187,13 @@ let winCheck = 0
     }
 ```
 
+### Step 3 - Handle right click
+
 The `handleRightClick()` function allows the player to toggle tombstones onto that square, and is relatively simple compared to the previous two main functions. It also reduces the counter visible in the upper left corner of the game.
 
 At this point, the game was functional at a simple level. This meant I could go in and add more advanced features.
+
+### Step 4 - Advanced features
 
 I used recursion again in my `firstReveal()` function. This function ensured that the first click could never give players a game over and would always land on a square with no adjacent skeletons. This means they would always be given a 'block' of cells to get started with, which I think makes the game more fun and less frustrating. It was really important to me that losses held meaning - I didn't want them to feel cheap or unfair.
 
@@ -207,13 +201,9 @@ I also implemented the `handleDoubleClick()` function, which, as I mentioned ear
 
 I also put new difficulties into the game, which required dynamically changing various parameters and the size of certain elements.
 
-It was at this later stage that I started to transform the game into how I wanted with *CSS*.
+### Step 5 - Styling
 
-I really wanted to instill several distinct vibes into the game, including tongue-in-cheek/shlocky horror and retro arcade style. This informed the visual look of the game and my audio choices.
-
-All images are pixel/bit style, which I think meshes well with minesweeper, as the board is itself composed of squares.
-
-To give the game life, I used gifs in some cases and created my own animations in others - for example to make it look like the tombstones were glowing. This was achieved by creating different stills which were then linked together using `#keyframes` in *CSS*.
+It was at this later stage that I started to transform the game into how I wanted with *CSS*. I really wanted to instill several distinct vibes into the game, including tongue-in-cheek/shlocky horror and retro arcade style. This informed the visual look of the game and my audio choices. All images are pixel/bit style, which I think meshes well with minesweeper, as the board is itself composed of squares. To give the game life, I used gifs in some cases and created my own animations in others - for example to make it look like the tombstones were glowing. This was achieved by creating different stills which were then linked together using `#keyframes` in *CSS*.
 
 Sound effects were added, including a shrill scream when players lose. A fast paced bit-tune style soundtrack was selected - I really wanted to instil a sense of urgency and frenetic energy into the game, which I hope this music helps achieve!
 
@@ -223,11 +213,9 @@ One of the final features added into the game was the setting 'the sky' to dynam
 
 The parts of the project that I anticipated to be the sticking points actually ended up going quite smoothly - it was parts I wasn't expecting that caused the most problems.
 
-Probably the most game-breaking moment throughout the project was trying to implement the ability to 'replay' the game and change the difficulty.
+### Adding replay functionality
 
-At first, when I tried to implement the replay, I kept generating multiple non-functioning boards on the screen. The problem was that I wasn't resetting all of the game's variables properly.
-
-This led me to include a new `resetVariables()` function at the beginning of the `init()` function to ensure everything was comprehensively wiped clean and set to its initial value. 
+Probably the most game-breaking moment throughout the project was trying to implement the ability to 'replay' the game and change the difficulty. At first, when I tried to implement the replay, I kept generating multiple non-functioning boards on the screen. The problem was that I wasn't resetting all of the game's variables properly. This led me to include a new `resetVariables()` function at the beginning of the `init()` function to ensure everything was comprehensively wiped clean and set to its initial value. 
 
 ```JavaScript
 const resetVariables = () => {
@@ -244,29 +232,23 @@ const resetVariables = () => {
 ```
 It took some trial and error to ensure that everything that had been changed throughout playing the game was reset to a clean slate.
 
-I also learned that I needed to create a function to re-generate the event listeners attached to the cells of the grid - because the old ones stopped working once the original grid had been destroyed by the `resetVariables()` function. This led to the `generateEventListeners()` function being added beneath it within the `init()` function.
-
-Although a struggle at the time, I feel like I learned a lot during this stage of development. Sorting the reset functionality also allowed me to then implement the change difficulty settings properly, as they relied on resetting the board first to work.
+I also learned that I needed to create a function to re-generate the event listeners attached to the cells of the grid - because the old ones stopped working once the original grid had been destroyed by the `resetVariables()` function. This led to the `generateEventListeners()` function being added beneath it within the `init()` function. Although a struggle at the time, I feel like I learned a lot during this stage of development. Sorting the reset functionality also allowed me to then implement the change difficulty settings properly, as they relied on resetting the board first to work.
 
 ## Wins
 
 This was my first ever coding project, so I felt a real sense of accomplishment upon completing it.
 
-I am proud of being able to add the double click functionality and making it so that the first click always produces a block of squares, as these were more advanced features.
+### Adding double click
 
-Implementing the double click was very smooth and quick - it was satisfying because I felt I understood a lot about my game at this point and how it worked. I had to add extra functionality to several previous lines of code to make it work.
+I am proud of being able to add the double click functionality and making it so that the first click always produces a block of squares, as these were more advanced features. Implementing the double click was very smooth and quick - it was satisfying because I felt I understood a lot about my game at this point and how it worked. I had to add extra functionality to several previous lines of code to make it work. This included adding a nearby tombstone count to each object - because I had already done something similar with the nearby skeleton count, it was easy to replicate this.
 
-This included adding a nearby tombstone count to each object - because I had already done something similar with the nearby skeleton count, it was easy to replicate this.
+### Atmosphere
 
 I am very pleased with the final look and feel of the game, which I hope achieved what I set out to create. I think the visual *win* and *loss* screens are really effective and communicate the state of the game in an appealing and fun way.
 
 ![Win and loss screens](./screenshots/win-loss-screens.png)
 
-I think that one of the highlights of minesweeper is its ability to startle the player when they lose - it requires such a degree of concentration and creates such a sense of anticipation that an unexpected loss can make the player jump.
-
-I am really happy with the visuals and audio of my loss screen to create this feeling in players.
-
-In addition, I think the changing sky also feeds into the storytelling of the game. This is established in the game's opening menu, which made my test players smile upon reading it. At the end of the day, a game should be enjoyable and fun - and that's what I wanted to make, so... mission accomplished!
+I think that one of the highlights of minesweeper is its ability to startle the player when they lose - it requires such a degree of concentration and creates such a sense of anticipation that an unexpected loss can make the player jump. I am really happy with the visuals and audio of my loss screen to create this feeling in players. In addition, I think the changing sky also feeds into the storytelling of the game. This is established in the game's opening menu, which made my test players smile upon reading it. At the end of the day, a game should be enjoyable and fun - and that's what I wanted to make, so... mission accomplished!
 
 ## Key learnings/takeaways
 
